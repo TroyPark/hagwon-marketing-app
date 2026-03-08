@@ -6,6 +6,8 @@ import { SURVEY_SECTIONS, TOTAL_QUESTIONS } from '@/lib/survey-data';
 import { useSurveyStore } from '@/store/survey-store';
 import { SurveyQuestion } from '@/types';
 import { ChevronLeft, ChevronRight, CheckCircle } from 'lucide-react';
+import { getBudgetTier, calculateChannelPriority, generateInsights, predictKPI, generateActionPlan } from '@/lib/recommendation-engine';
+import { calculateQuote } from '@/lib/quote-calculator';
 
 function ProgressBar({ current, total, sectionIndex }: { current: number; total: number; sectionIndex: number }) {
   const pct = Math.round((current / total) * 100);
@@ -139,17 +141,16 @@ export default function SurveyPage() {
     if (currentSection < SURVEY_SECTIONS.length - 1) {
       nextSection();
     } else {
-      // Submit
+      // Submit (client-side, no API call needed)
       setSubmitting(true);
       try {
-        const res = await fetch('/api/recommend', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(answers),
-        });
-        if (!res.ok) throw new Error('API error');
-        const data = await res.json();
-        useSurveyStore.getState().setResult(data);
+        const budgetTier = getBudgetTier(answers.Q11 || '50_100');
+        const recommendedChannels = calculateChannelPriority(answers);
+        const quote = calculateQuote(recommendedChannels, budgetTier);
+        const expectedKPI = predictKPI(recommendedChannels, quote.totalAdBudget);
+        const insights = generateInsights(answers, recommendedChannels);
+        const actionPlan = generateActionPlan(recommendedChannels);
+        useSurveyStore.getState().setResult({ budgetTier, recommendedChannels, quote, expectedKPI, insights, actionPlan });
         setCompleted(true);
         router.push('/result');
       } catch {
