@@ -141,7 +141,7 @@ export default function SurveyPage() {
 
     if (currentSection < SURVEY_SECTIONS.length - 1) {
       nextSection();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 50);
     } else {
       // Submit (client-side, no API call needed)
       setSubmitting(true);
