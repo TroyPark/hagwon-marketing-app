@@ -152,10 +152,13 @@ export default function SurveyPage() {
         const expectedKPI = predictKPI(recommendedChannels, quote.totalAdBudget);
         const insights = generateInsights(answers, recommendedChannels);
         const actionPlan = generateActionPlan(recommendedChannels);
-        useSurveyStore.getState().setResult({ budgetTier, recommendedChannels, quote, expectedKPI, insights, actionPlan });
+        const resultData = { budgetTier, recommendedChannels, quote, expectedKPI, insights, actionPlan };
+        useSurveyStore.getState().setResult(resultData);
+        sessionStorage.setItem('survey-result', JSON.stringify(resultData));
         setCompleted(true);
-        router.push('/result');
-      } catch {
+        window.location.href = (process.env.NODE_ENV === 'production' ? '/hagwon-marketing-app' : '') + '/result';
+      } catch (e) {
+        console.error('결과 생성 오류:', e);
         alert('결과 생성 중 오류가 발생했습니다. 다시 시도해 주세요.');
       } finally {
         setSubmitting(false);
@@ -177,7 +180,7 @@ export default function SurveyPage() {
       {/* Header */}
       <header className="bg-white border-b border-gray-100 py-4 px-6 no-print">
         <div className="max-w-2xl mx-auto flex items-center gap-2">
-          <Link href="/" className="flex items-center gap-2 hover:opacity-75 transition-opacity">
+          <Link href="/" prefetch={false} className="flex items-center gap-2 hover:opacity-75 transition-opacity">
             <div className="w-6 h-6 bg-[#0F3460] rounded-sm" />
             <span className="font-bold text-[#0F3460] tracking-tight">EduMarketing</span>
           </Link>

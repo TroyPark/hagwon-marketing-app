@@ -7,7 +7,7 @@ export default function HomePage() {
       {/* Top nav bar */}
       <nav className="border-b border-gray-100 px-6 py-4">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2 hover:opacity-75 transition-opacity">
+          <Link href="/" prefetch={false} className="flex items-center gap-2 hover:opacity-75 transition-opacity">
             <div className="w-7 h-7 bg-[#0F3460] rounded-sm" />
             <span className="font-bold text-[#0F3460] text-lg tracking-tight">EduMarketing</span>
           </Link>

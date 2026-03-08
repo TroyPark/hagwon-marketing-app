@@ -76,12 +76,23 @@ export default function ResultPage() {
   const [hasHydrated, setHasHydrated] = useState(false);
 
   useEffect(() => {
+    // sessionStorage에서 결과 복원 (full page reload 시 대비)
+    if (!result) {
+      const saved = sessionStorage.getItem('survey-result');
+      if (saved) {
+        try {
+          useSurveyStore.getState().setResult(JSON.parse(saved));
+        } catch {}
+      }
+    }
     setHasHydrated(true);
   }, []);
 
   useEffect(() => {
-    if (hasHydrated && !result) router.push('/survey');
-  }, [hasHydrated, result, router]);
+    if (hasHydrated && !result) {
+      window.location.href = (process.env.NODE_ENV === 'production' ? '/hagwon-marketing-app' : '') + '/survey';
+    }
+  }, [hasHydrated, result]);
 
   const handlePrint = useReactToPrint({
     content: () => printRef.current,
@@ -117,7 +128,7 @@ export default function ResultPage() {
       <header className="bg-white border-b border-gray-100 px-6 py-4 no-print sticky top-0 z-30">
         <div className="max-w-5xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Link href="/" className="flex items-center gap-2 hover:opacity-75 transition-opacity">
+            <Link href="/" prefetch={false} className="flex items-center gap-2 hover:opacity-75 transition-opacity">
               <div className="w-6 h-6 bg-[#0F3460] rounded-sm" />
               <span className="font-bold text-[#0F3460] tracking-tight">EduMarketing</span>
             </Link>
