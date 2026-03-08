@@ -7,10 +7,10 @@ export default function HomePage() {
       {/* Top nav bar */}
       <nav className="border-b border-gray-100 px-6 py-4">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-2">
+          <Link href="/" className="flex items-center gap-2 hover:opacity-75 transition-opacity">
             <div className="w-7 h-7 bg-[#0F3460] rounded-sm" />
             <span className="font-bold text-[#0F3460] text-lg tracking-tight">EduMarketing</span>
-          </div>
+          </Link>
           <Link
             href="/survey"
             className="text-sm font-semibold text-[#0F3460] border border-[#0F3460] px-4 py-2 rounded-md hover:bg-[#0F3460] hover:text-white transition-all"
