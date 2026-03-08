@@ -666,48 +666,53 @@ export default function ResultPage() {
             ))}
           </div>
 
-          {/* 차트 2개 나란히 */}
-          <div className="grid grid-cols-2 gap-4 mb-6" style={{ gridTemplateColumns: '1fr 1fr' }}>
-            {/* 예산 배분 도넛 차트 */}
-            <div>
-              <p className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">채널별 예산 배분</p>
-              <PieChart width={280} height={200}>
+          {/* 채널별 예산 배분 파이 차트 */}
+          <div className="mb-4">
+            <p className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">채널별 예산 배분</p>
+            <div className="flex items-center gap-6">
+              <PieChart width={200} height={180}>
                 <Pie
                   data={pieData}
-                  cx={140}
-                  cy={100}
-                  innerRadius={45}
-                  outerRadius={75}
+                  cx={100}
+                  cy={90}
+                  innerRadius={40}
+                  outerRadius={70}
                   dataKey="value"
                   paddingAngle={3}
-                  label={({ name, percent }: { name: string; percent: number }) =>
-                    `${name} ${(percent * 100).toFixed(0)}%`
-                  }
-                  labelLine={false}
+                  label={false}
                 >
                   {pieData.map((_, i) => (
                     <Cell key={i} fill={CHART_COLORS[i % CHART_COLORS.length]} />
                   ))}
                 </Pie>
-                <Tooltip formatter={(v: number) => formatKRW(v)} />
               </PieChart>
+              {/* 범례 직접 렌더링 */}
+              <div className="flex flex-col gap-1.5">
+                {pieData.map((entry, i) => (
+                  <div key={i} className="flex items-center gap-2 text-xs text-gray-700">
+                    <span className="w-3 h-3 rounded-sm flex-shrink-0" style={{ backgroundColor: CHART_COLORS[i % CHART_COLORS.length] }} />
+                    <span>{entry.name}</span>
+                    <span className="text-gray-400 ml-1">{((entry.value / pieData.reduce((s, d) => s + d.value, 0)) * 100).toFixed(0)}%</span>
+                  </div>
+                ))}
+              </div>
             </div>
+          </div>
 
-            {/* 3개월 성과 예측 라인 차트 */}
-            <div style={{ width: '100%' }}>
-              <p className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">3개월 성과 예측 추이</p>
-              <LineChart width={320} height={200} data={trendData} margin={{ top: 5, right: 40, left: 0, bottom: 5 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-                <XAxis dataKey="month" tick={{ fontSize: 10, fill: '#9ca3af' }} axisLine={false} tickLine={false} />
-                <YAxis yAxisId="left" tick={{ fontSize: 10, fill: '#9ca3af' }} axisLine={false} tickLine={false} />
-                <YAxis yAxisId="right" orientation="right" tick={{ fontSize: 10, fill: '#9ca3af' }} axisLine={false} tickLine={false} />
-                <Tooltip contentStyle={{ fontSize: 11 }} />
-                <Legend wrapperStyle={{ fontSize: 11 }} />
-                <Line yAxisId="left" type="monotone" dataKey="클릭수" stroke="#0F3460" strokeWidth={2} dot={{ r: 3 }} />
-                <Line yAxisId="right" type="monotone" dataKey="상담문의" stroke="#8338EC" strokeWidth={2} dot={{ r: 3 }} />
-                <Line yAxisId="right" type="monotone" dataKey="신규등록" stroke="#06D6A0" strokeWidth={2} dot={{ r: 3 }} />
-              </LineChart>
-            </div>
+          {/* 3개월 성과 예측 라인 차트 */}
+          <div className="mb-6">
+            <p className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">3개월 성과 예측 추이</p>
+            <LineChart width={560} height={200} data={trendData} margin={{ top: 5, right: 50, left: 10, bottom: 5 }}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+              <XAxis dataKey="month" tick={{ fontSize: 10, fill: '#9ca3af' }} axisLine={false} tickLine={false} />
+              <YAxis yAxisId="left" tick={{ fontSize: 10, fill: '#9ca3af' }} axisLine={false} tickLine={false} />
+              <YAxis yAxisId="right" orientation="right" tick={{ fontSize: 10, fill: '#9ca3af' }} axisLine={false} tickLine={false} />
+              <Tooltip contentStyle={{ fontSize: 11 }} />
+              <Legend wrapperStyle={{ fontSize: 11 }} />
+              <Line yAxisId="left" type="monotone" dataKey="클릭수" stroke="#0F3460" strokeWidth={2} dot={{ r: 3 }} />
+              <Line yAxisId="right" type="monotone" dataKey="상담문의" stroke="#8338EC" strokeWidth={2} dot={{ r: 3 }} />
+              <Line yAxisId="right" type="monotone" dataKey="신규등록" stroke="#06D6A0" strokeWidth={2} dot={{ r: 3 }} />
+            </LineChart>
           </div>
 
           <p className="text-xs text-gray-400 mt-4 border-t pt-3">
