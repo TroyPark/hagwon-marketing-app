@@ -456,17 +456,16 @@ export default function ResultPage() {
                   </div>
                 </div>
                 <ResponsiveContainer width="100%" height={240}>
-                  <LineChart data={trendData} margin={{ top: 5, right: 20, left: 0, bottom: 5 }}>
+                  <LineChart data={trendData} margin={{ top: 5, right: 40, left: 0, bottom: 5 }}>
                     <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
                     <XAxis dataKey="month" tick={{ fontSize: 12, fill: '#9ca3af' }} axisLine={false} tickLine={false} />
-                    <YAxis tick={{ fontSize: 11, fill: '#9ca3af' }} axisLine={false} tickLine={false} />
-                    <Tooltip
-                      contentStyle={{ borderRadius: 8, border: '1px solid #e5e7eb', fontSize: 12 }}
-                    />
+                    <YAxis yAxisId="left" tick={{ fontSize: 11, fill: '#9ca3af' }} axisLine={false} tickLine={false} />
+                    <YAxis yAxisId="right" orientation="right" tick={{ fontSize: 11, fill: '#9ca3af' }} axisLine={false} tickLine={false} />
+                    <Tooltip contentStyle={{ borderRadius: 8, border: '1px solid #e5e7eb', fontSize: 12 }} />
                     <Legend wrapperStyle={{ fontSize: 12 }} />
-                    <Line type="monotone" dataKey="클릭수" stroke="#0F3460" strokeWidth={2.5} dot={{ r: 4 }} />
-                    <Line type="monotone" dataKey="상담문의" stroke="#8338EC" strokeWidth={2.5} dot={{ r: 4 }} />
-                    <Line type="monotone" dataKey="신규등록" stroke="#06D6A0" strokeWidth={2.5} dot={{ r: 4 }} />
+                    <Line yAxisId="left" type="monotone" dataKey="클릭수" stroke="#0F3460" strokeWidth={2.5} dot={{ r: 4 }} />
+                    <Line yAxisId="right" type="monotone" dataKey="상담문의" stroke="#8338EC" strokeWidth={2.5} dot={{ r: 4 }} />
+                    <Line yAxisId="right" type="monotone" dataKey="신규등록" stroke="#06D6A0" strokeWidth={2.5} dot={{ r: 4 }} />
                   </LineChart>
                 </ResponsiveContainer>
               </div>
