@@ -588,6 +588,89 @@ export default function ResultPage() {
             </div>
           )}
         </div>
+
+        {/* ── 인쇄 전용 견적서 ── */}
+        <div className="hidden print:block mt-8">
+
+          {/* 추천 채널 */}
+          <h3 className="text-base font-black text-[#0F3460] mb-3 border-b pb-2">추천 마케팅 채널</h3>
+          <table className="w-full text-sm mb-8 border-collapse">
+            <thead>
+              <tr className="bg-[#0F3460] text-white">
+                <th className="text-left px-3 py-2">순위</th>
+                <th className="text-left px-3 py-2">채널</th>
+                <th className="text-left px-3 py-2">추천 이유</th>
+              </tr>
+            </thead>
+            <tbody>
+              {recommendedChannels.slice(0, 3).map((ch, i) => (
+                <tr key={ch.channel} className={i % 2 === 0 ? 'bg-gray-50' : 'bg-white'}>
+                  <td className="px-3 py-2 font-bold">{i + 1}위</td>
+                  <td className="px-3 py-2 font-semibold">{CHANNEL_NAMES[ch.channel] || ch.channel}</td>
+                  <td className="px-3 py-2 text-gray-600 text-xs">{insights[ch.channel] || ''}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
+          {/* 견적서 */}
+          <h3 className="text-base font-black text-[#0F3460] mb-3 border-b pb-2">맞춤 견적서</h3>
+          <table className="w-full text-sm mb-4 border-collapse">
+            <thead>
+              <tr className="bg-[#0F3460] text-white">
+                <th className="text-left px-3 py-2">서비스</th>
+                <th className="text-right px-3 py-2">월 관리비</th>
+                <th className="text-right px-3 py-2">광고비(추천)</th>
+                <th className="text-right px-3 py-2">세팅비(1회)</th>
+                <th className="text-right px-3 py-2">월 합계</th>
+              </tr>
+            </thead>
+            <tbody>
+              {quote.items.map((item, i) => (
+                <tr key={item.id} className={i % 2 === 0 ? 'bg-gray-50' : 'bg-white'}>
+                  <td className="px-3 py-2">
+                    <div className="font-semibold">{item.serviceName}</div>
+                    <div className="text-xs text-gray-500">{item.description.substring(0, 50)}...</div>
+                  </td>
+                  <td className="text-right px-3 py-2">{formatKRW(item.managementFee)}</td>
+                  <td className="text-right px-3 py-2">{formatKRW(item.recommendedAdBudget)}</td>
+                  <td className="text-right px-3 py-2 text-gray-500">{formatKRW(item.setupFee || 0)}</td>
+                  <td className="text-right px-3 py-2 font-bold">{formatKRW(item.managementFee + item.recommendedAdBudget)}</td>
+                </tr>
+              ))}
+            </tbody>
+            <tfoot>
+              <tr className="bg-[#0F3460] text-white font-bold">
+                <td className="px-3 py-2">합계</td>
+                <td className="text-right px-3 py-2">{formatKRW(quote.totalManagementFee)}</td>
+                <td className="text-right px-3 py-2">{formatKRW(quote.totalAdBudget)}</td>
+                <td className="text-right px-3 py-2">{formatKRW(quote.totalSetupFee)}</td>
+                <td className="text-right px-3 py-2 text-yellow-300">{formatKRW(quote.monthlyTotal)}</td>
+              </tr>
+            </tfoot>
+          </table>
+
+          {/* 기대 KPI */}
+          <h3 className="text-base font-black text-[#0F3460] mb-3 border-b pb-2">기대 성과 (월 기준)</h3>
+          <div className="grid grid-cols-4 gap-3 mb-8">
+            {[
+              { label: '예상 클릭수', value: `${expectedKPI.monthlyClicks.toLocaleString()}회` },
+              { label: '예상 노출수', value: `${expectedKPI.monthlyImpressions.toLocaleString()}회` },
+              { label: '예상 상담 문의', value: `${expectedKPI.monthlyConsultations}건` },
+              { label: '예상 신규 등록', value: `${expectedKPI.monthlyNewStudents}명` },
+            ].map((item, i) => (
+              <div key={i} className="border border-gray-200 rounded-lg p-3 text-center">
+                <div className="text-xs text-gray-500 mb-1">{item.label}</div>
+                <div className="text-lg font-black text-[#0F3460]">{item.value}</div>
+              </div>
+            ))}
+          </div>
+
+          <p className="text-xs text-gray-400 mt-4 border-t pt-3">
+            ※ 본 견적서는 참고용이며 실제 성과는 학원 특성 및 시장 상황에 따라 달라질 수 있습니다. · EduMarketing
+          </p>
+        </div>
+
       </div>
 
       {/* PDF Name Modal */}
