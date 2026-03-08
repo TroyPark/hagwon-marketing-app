@@ -667,7 +667,7 @@ export default function ResultPage() {
           </div>
 
           {/* 차트 2개 나란히 */}
-          <div className="grid grid-cols-2 gap-6 mb-6">
+          <div className="grid grid-cols-2 gap-4 mb-6" style={{ gridTemplateColumns: '1fr 1fr' }}>
             {/* 예산 배분 도넛 차트 */}
             <div>
               <p className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">채널별 예산 배분</p>
@@ -694,9 +694,9 @@ export default function ResultPage() {
             </div>
 
             {/* 3개월 성과 예측 라인 차트 */}
-            <div>
+            <div style={{ width: '100%' }}>
               <p className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">3개월 성과 예측 추이</p>
-              <LineChart width={300} height={200} data={trendData} margin={{ top: 5, right: 30, left: 0, bottom: 5 }}>
+              <LineChart width={320} height={200} data={trendData} margin={{ top: 5, right: 40, left: 0, bottom: 5 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
                 <XAxis dataKey="month" tick={{ fontSize: 10, fill: '#9ca3af' }} axisLine={false} tickLine={false} />
                 <YAxis yAxisId="left" tick={{ fontSize: 10, fill: '#9ca3af' }} axisLine={false} tickLine={false} />
