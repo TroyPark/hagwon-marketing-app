@@ -73,16 +73,22 @@ export default function ResultPage() {
   const [hagwonName, setHagwonName] = useState('');
   const printRef = useRef<HTMLDivElement>(null);
 
+  const [hasHydrated, setHasHydrated] = useState(false);
+
   useEffect(() => {
-    if (!result) router.push('/survey');
-  }, [result, router]);
+    setHasHydrated(true);
+  }, []);
+
+  useEffect(() => {
+    if (hasHydrated && !result) router.push('/survey');
+  }, [hasHydrated, result, router]);
 
   const handlePrint = useReactToPrint({
     content: () => printRef.current,
     documentTitle: `${hagwonName || '학원'}_마케팅_견적서`,
   });
 
-  if (!result) return null;
+  if (!hasHydrated || !result) return null;
 
   const { budgetTier, recommendedChannels, quote, expectedKPI, insights, actionPlan } =
     result as RecommendationResult;
