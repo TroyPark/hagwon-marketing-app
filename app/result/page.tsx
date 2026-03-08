@@ -652,7 +652,7 @@ export default function ResultPage() {
 
           {/* 기대 KPI */}
           <h3 className="text-base font-black text-[#0F3460] mb-3 border-b pb-2">기대 성과 (월 기준)</h3>
-          <div className="grid grid-cols-4 gap-3 mb-8">
+          <div className="grid grid-cols-4 gap-3 mb-6">
             {[
               { label: '예상 클릭수', value: `${expectedKPI.monthlyClicks.toLocaleString()}회` },
               { label: '예상 노출수', value: `${expectedKPI.monthlyImpressions.toLocaleString()}회` },
@@ -664,6 +664,54 @@ export default function ResultPage() {
                 <div className="text-lg font-black text-[#0F3460]">{item.value}</div>
               </div>
             ))}
+          </div>
+
+          {/* 차트 2개 나란히 */}
+          <div className="grid grid-cols-2 gap-6 mb-6">
+            {/* 예산 배분 도넛 차트 */}
+            <div>
+              <p className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">채널별 예산 배분</p>
+              <ResponsiveContainer width="100%" height={200}>
+                <PieChart>
+                  <Pie
+                    data={pieData}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={45}
+                    outerRadius={75}
+                    dataKey="value"
+                    paddingAngle={3}
+                    label={({ name, percent }: { name: string; percent: number }) =>
+                      `${name} ${(percent * 100).toFixed(0)}%`
+                    }
+                    labelLine={false}
+                  >
+                    {pieData.map((_, i) => (
+                      <Cell key={i} fill={CHART_COLORS[i % CHART_COLORS.length]} />
+                    ))}
+                  </Pie>
+                  <Tooltip formatter={(v: number) => formatKRW(v)} />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+
+            {/* 3개월 성과 예측 라인 차트 */}
+            <div>
+              <p className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">3개월 성과 예측 추이</p>
+              <ResponsiveContainer width="100%" height={200}>
+                <LineChart data={trendData} margin={{ top: 5, right: 30, left: 0, bottom: 5 }}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                  <XAxis dataKey="month" tick={{ fontSize: 10, fill: '#9ca3af' }} axisLine={false} tickLine={false} />
+                  <YAxis yAxisId="left" tick={{ fontSize: 10, fill: '#9ca3af' }} axisLine={false} tickLine={false} />
+                  <YAxis yAxisId="right" orientation="right" tick={{ fontSize: 10, fill: '#9ca3af' }} axisLine={false} tickLine={false} />
+                  <Tooltip contentStyle={{ fontSize: 11 }} />
+                  <Legend wrapperStyle={{ fontSize: 11 }} />
+                  <Line yAxisId="left" type="monotone" dataKey="클릭수" stroke="#0F3460" strokeWidth={2} dot={{ r: 3 }} />
+                  <Line yAxisId="right" type="monotone" dataKey="상담문의" stroke="#8338EC" strokeWidth={2} dot={{ r: 3 }} />
+                  <Line yAxisId="right" type="monotone" dataKey="신규등록" stroke="#06D6A0" strokeWidth={2} dot={{ r: 3 }} />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
           </div>
 
           <p className="text-xs text-gray-400 mt-4 border-t pt-3">
