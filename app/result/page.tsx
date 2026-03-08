@@ -302,13 +302,13 @@ export default function ResultPage() {
               </div>
 
               {/* Monthly total highlight */}
-              <div className="bg-[#0F3460] rounded-xl p-5 flex flex-col md:flex-row items-center justify-between gap-3">
+              <div className="bg-[#0F3460] rounded-xl p-5 flex flex-col md:flex-row items-center justify-between gap-3 text-center md:text-left">
                 <div>
                   <div className="text-blue-200 text-xs font-semibold uppercase tracking-widest mb-1">월 예상 총 투자금액</div>
                   <div className="text-3xl font-black text-white">{formatKRW(totalMonthly)}</div>
                   <div className="text-blue-300 text-xs mt-1">관리비 + 광고비 기준 / 세팅비 제외</div>
                 </div>
-                <div className="text-right">
+                <div className="md:text-right">
                   <div className="text-blue-200 text-xs mb-1">예산 등급</div>
                   <div className="text-white font-bold text-lg">{budgetTier.label}</div>
                   <div className="text-blue-300 text-xs">월 {budgetTier.min}~{budgetTier.max}만원 기준</div>
