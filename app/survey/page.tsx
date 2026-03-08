@@ -6,6 +6,7 @@ import { SURVEY_SECTIONS, TOTAL_QUESTIONS } from '@/lib/survey-data';
 import { useSurveyStore } from '@/store/survey-store';
 import { SurveyQuestion } from '@/types';
 import { ChevronLeft, ChevronRight, CheckCircle } from 'lucide-react';
+import Link from 'next/link';
 import { getBudgetTier, calculateChannelPriority, generateInsights, predictKPI, generateActionPlan } from '@/lib/recommendation-engine';
 import { calculateQuote } from '@/lib/quote-calculator';
 
@@ -175,8 +176,10 @@ export default function SurveyPage() {
       {/* Header */}
       <header className="bg-white border-b border-gray-100 py-4 px-6 no-print">
         <div className="max-w-2xl mx-auto flex items-center gap-2">
-          <div className="w-6 h-6 bg-[#0F3460] rounded-sm" />
-          <span className="font-bold text-[#0F3460] tracking-tight">EduMarketing</span>
+          <Link href="/" className="flex items-center gap-2 hover:opacity-75 transition-opacity">
+            <div className="w-6 h-6 bg-[#0F3460] rounded-sm" />
+            <span className="font-bold text-[#0F3460] tracking-tight">EduMarketing</span>
+          </Link>
           <span className="text-gray-300 mx-2">|</span>
           <span className="text-sm text-gray-500">마케팅 진단 설문</span>
         </div>

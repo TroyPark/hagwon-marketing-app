@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useSurveyStore } from '@/store/survey-store';
 import { RecommendationResult } from '@/types';
@@ -110,8 +111,10 @@ export default function ResultPage() {
       <header className="bg-white border-b border-gray-100 px-6 py-4 no-print sticky top-0 z-30">
         <div className="max-w-5xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-6 h-6 bg-[#0F3460] rounded-sm" />
-            <span className="font-bold text-[#0F3460] tracking-tight">EduMarketing</span>
+            <Link href="/" className="flex items-center gap-2 hover:opacity-75 transition-opacity">
+              <div className="w-6 h-6 bg-[#0F3460] rounded-sm" />
+              <span className="font-bold text-[#0F3460] tracking-tight">EduMarketing</span>
+            </Link>
             <span className="text-gray-300 mx-2">|</span>
             <span className="text-sm text-gray-500 font-medium">마케팅 진단 결과</span>
           </div>
