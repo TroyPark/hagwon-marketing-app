@@ -7,6 +7,7 @@ import { useSurveyStore } from '@/store/survey-store';
 import { SurveyQuestion } from '@/types';
 import { ChevronLeft, ChevronRight, CheckCircle } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { getBudgetTier, calculateChannelPriority, generateInsights, predictKPI, generateActionPlan } from '@/lib/recommendation-engine';
 import { calculateQuote } from '@/lib/quote-calculator';
 
@@ -21,9 +22,9 @@ function ProgressBar({ current, total, sectionIndex }: { current: number; total:
           </span>
           <span>{pct}% 완료</span>
         </div>
-        <div className="h-1 bg-gray-100 rounded-full overflow-hidden">
+        <div className="h-0.5 bg-[#E5E5E5] overflow-hidden">
           <div
-            className="h-full bg-[#0F3460] transition-all duration-500 rounded-full"
+            className="h-full bg-[#111111] transition-all duration-500"
             style={{ width: `${pct}%` }}
           />
         </div>
@@ -61,7 +62,7 @@ function QuestionBlock({
 
       {question.type === 'text' ? (
         <textarea
-          className="w-full border border-gray-200 rounded-lg p-4 text-sm text-gray-800 focus:outline-none focus:border-[#0F3460] resize-none transition-colors"
+          className="w-full border border-[#E5E5E5] p-4 text-sm text-[#333333] focus:outline-none focus:border-[#111111] resize-none transition-colors bg-white"
           rows={4}
           placeholder={question.placeholder}
           value={(answer as string) || ''}
@@ -82,15 +83,15 @@ function QuestionBlock({
                     ? handleMultiple(opt.value)
                     : handleSingle(opt.value)
                 }
-                className={`text-left px-4 py-3 rounded-lg border transition-all text-sm min-h-[48px] flex items-center gap-3 ${
+                className={`text-left px-4 py-3 border transition-all text-sm min-h-[48px] flex items-center gap-3 ${
                   isSelected
-                    ? 'border-[#0F3460] bg-[#0F3460] text-white shadow-md shadow-blue-900/15'
-                    : 'border-gray-200 bg-white text-gray-700 hover:border-[#0F3460]/40 hover:bg-gray-50'
+                    ? 'border-[#111111] bg-[#111111] text-white'
+                    : 'border-[#E5E5E5] bg-white text-[#444444] hover:border-[#111111]/40 hover:bg-[#F5F5F5]'
                 }`}
               >
                 {question.type === 'multiple_choice' && (
-                  <span className={`w-4 h-4 rounded flex-shrink-0 flex items-center justify-center border ${isSelected ? 'border-white bg-white' : 'border-gray-300'}`}>
-                    {isSelected && <span className="text-[#0F3460] text-xs font-black">✓</span>}
+                  <span className={`w-4 h-4 flex-shrink-0 flex items-center justify-center border ${isSelected ? 'border-white bg-white' : 'border-[#CCCCCC]'}`}>
+                    {isSelected && <span className="text-[#111111] text-xs font-black">✓</span>}
                   </span>
                 )}
                 {question.type === 'single_choice' && (
@@ -176,16 +177,15 @@ export default function SurveyPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8F9FC] flex flex-col">
+    <div className="min-h-screen bg-[#F5F5F5] flex flex-col">
       {/* Header */}
-      <header className="bg-white border-b border-gray-100 py-4 px-6 no-print">
-        <div className="max-w-2xl mx-auto flex items-center gap-2">
-          <Link href="/" prefetch={false} className="flex items-center gap-2 hover:opacity-75 transition-opacity">
-            <div className="w-6 h-6 bg-[#0F3460] rounded-sm" />
-            <span className="font-bold text-[#0F3460] tracking-tight">EduMarketing</span>
+      <header className="bg-white border-b border-black/10 py-4 px-6 no-print">
+        <div className="max-w-2xl mx-auto flex items-center gap-3">
+          <Link href="/" prefetch={false} className="flex items-center hover:opacity-60 transition-opacity">
+            <Image src="/bi_v1.png" alt="STRAIGHT LAB" width={120} height={34} className="h-8 w-auto" unoptimized />
           </Link>
-          <span className="text-gray-300 mx-2">|</span>
-          <span className="text-sm text-gray-500">마케팅 진단 설문</span>
+          <span className="text-[#DDDDDD]">|</span>
+          <span className="text-xs text-[#888888] uppercase tracking-widest font-medium">마케팅 진단 설문</span>
         </div>
       </header>
 
@@ -195,18 +195,21 @@ export default function SurveyPage() {
         <div className="max-w-2xl mx-auto">
           {/* Section title */}
           <div className="mb-8 animate-fade-in-up">
-            <p className="text-xs font-bold text-[#0F3460] uppercase tracking-widest mb-2">
-              섹션 {currentSection + 1}
-            </p>
-            <h1 className="text-2xl font-black text-gray-900">{section.title}</h1>
-            {section.description && <p className="text-gray-400 text-sm mt-1">{section.description}</p>}
+            <div className="flex items-center gap-2 mb-3">
+              <div className="h-px w-6 bg-[#111111]" />
+              <p className="text-xs font-bold text-[#111111] uppercase tracking-[0.2em]">
+                섹션 {currentSection + 1} / {SURVEY_SECTIONS.length}
+              </p>
+            </div>
+            <h1 className="text-2xl font-black text-[#111111] tracking-tight">{section.title}</h1>
+            {section.description && <p className="text-[#888888] text-sm mt-1">{section.description}</p>}
           </div>
 
           {/* Questions */}
-          <div className="space-y-5">
+          <div className="space-y-4">
             {section.questions.map((q) => (
-              <div key={q.id} className="bg-white rounded-xl border border-gray-100 shadow-sm p-6">
-                <div className="text-xs font-bold text-gray-300 mb-3 uppercase tracking-widest">Q{q.id.replace('Q', '')}</div>
+              <div key={q.id} className="bg-white border border-black/10 p-6">
+                <div className="text-xs font-bold text-[#BBBBBB] mb-3 uppercase tracking-widest">Q{q.id.replace('Q', '')}</div>
                 <QuestionBlock
                   question={q}
                   answer={answers[q.id as keyof typeof answers] as string | string[] | undefined}
@@ -221,7 +224,7 @@ export default function SurveyPage() {
           <div className="flex justify-between items-center mt-8 pb-10">
             <button
               onClick={handlePrev}
-              className="flex items-center gap-2 text-gray-500 hover:text-gray-900 font-medium px-4 py-3 rounded-lg hover:bg-gray-100 transition-all text-sm"
+              className="flex items-center gap-2 text-[#888888] hover:text-[#111111] font-medium px-4 py-3 hover:bg-[#EEEEEE] transition-all text-sm uppercase tracking-wider"
             >
               <ChevronLeft className="w-4 h-4" />
               이전
@@ -229,7 +232,7 @@ export default function SurveyPage() {
             <button
               onClick={handleNext}
               disabled={submitting}
-              className="flex items-center gap-2 bg-[#0F3460] hover:bg-[#0a2744] disabled:opacity-50 text-white font-bold px-7 py-3 rounded-lg transition-all shadow-lg shadow-blue-900/20 text-sm"
+              className="flex items-center gap-2 bg-[#111111] hover:bg-black disabled:opacity-40 text-white font-bold px-7 py-3 transition-all text-sm uppercase tracking-widest"
             >
               {submitting ? (
                 <>분석 중...</>

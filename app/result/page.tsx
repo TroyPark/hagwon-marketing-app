@@ -15,8 +15,9 @@ import {
   CheckCircle2, AlertTriangle,
 } from 'lucide-react';
 import { useReactToPrint } from 'react-to-print';
+import Image from 'next/image';
 
-const CHART_COLORS = ['#0F3460', '#3A86FF', '#8338EC', '#06D6A0', '#FFB703', '#FB8500'];
+const CHART_COLORS = ['#111111', '#555555', '#888888', '#AAAAAA', '#333333', '#777777'];
 
 const CHANNEL_NAMES: Record<string, string> = {
   naver_search_ad: '네이버 검색광고',
@@ -43,7 +44,7 @@ const CHANNEL_CATEGORY_COLOR: Record<string, string> = {
   sns_mgmt: 'bg-pink-50 text-pink-700 border-pink-100',
   homepage: 'bg-purple-50 text-purple-700 border-purple-100',
   kakao_ad: 'bg-yellow-50 text-yellow-700 border-yellow-100',
-  consulting: 'bg-gray-50 text-gray-700 border-gray-200',
+  consulting: 'bg-[#F5F5F5] text-gray-700 border-gray-200',
 };
 
 function formatKRW(n: number) {
@@ -123,21 +124,20 @@ export default function ResultPage() {
   const totalMonthly = quote.totalManagementFee + Math.round(quote.totalAdBudget * adBudgetMultiplier);
 
   return (
-    <div className="min-h-screen bg-[#F8F9FC]">
+    <div className="min-h-screen bg-[#F5F5F5] font-sans">
       {/* Header */}
-      <header className="bg-white border-b border-gray-100 px-6 py-4 no-print sticky top-0 z-30">
+      <header className="bg-white border-b border-black/10 px-6 py-4 no-print sticky top-0 z-30">
         <div className="max-w-5xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Link href="/" prefetch={false} className="flex items-center gap-2 hover:opacity-75 transition-opacity">
-              <div className="w-6 h-6 bg-[#0F3460] rounded-sm" />
-              <span className="font-bold text-[#0F3460] tracking-tight">EduMarketing</span>
+          <div className="flex items-center gap-3">
+            <Link href="/" prefetch={false} className="flex items-center hover:opacity-75 transition-opacity">
+              <Image src="/bi_v1.png" alt="STRAIGHT LAB" width={120} height={34} className="h-8 w-auto" unoptimized />
             </Link>
-            <span className="text-gray-300 mx-2">|</span>
+            <span className="text-gray-200">|</span>
             <span className="text-sm text-gray-500 font-medium">마케팅 진단 결과</span>
           </div>
           <button
             onClick={() => { reset(); router.push('/'); }}
-            className="flex items-center gap-1.5 text-sm text-gray-500 hover:text-[#0F3460] transition-colors"
+            className="flex items-center gap-1.5 text-xs text-[#888888] hover:text-[#111111] transition-colors uppercase tracking-widest font-medium"
           >
             <RotateCcw className="w-4 h-4" />
             다시 진단하기
@@ -148,29 +148,34 @@ export default function ResultPage() {
       <div ref={printRef} className="max-w-5xl mx-auto py-8 px-6">
         {/* Print header */}
         <div className="hidden print:block mb-8 pb-6 border-b border-gray-200">
-          <h1 className="text-2xl font-black text-[#0F3460]">
+          <div className="flex items-center justify-between mb-2">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/bi_v1.png" alt="STRAIGHT LAB" style={{ height: 36, width: 'auto' }} />
+            <p className="text-gray-400 text-sm">발급일: {new Date().toLocaleDateString('ko-KR')}</p>
+          </div>
+          <h1 className="text-2xl font-black text-[#111111] mt-4">
             {hagwonName ? `${hagwonName} · ` : ''}마케팅 진단 견적서
           </h1>
-          <p className="text-gray-400 text-sm mt-1">발급일: {new Date().toLocaleDateString('ko-KR')} · EduMarketing</p>
+          <p className="text-gray-400 text-sm mt-1">스트레이트랩 · 학원 마케팅 전문 기업</p>
         </div>
 
         {/* Diagnosis Summary */}
-        <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-6 mb-6">
+        <div className="bg-white rounded-sm border border-black/10 p-6 mb-6">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
-              <p className="text-xs font-bold text-[#0F3460] uppercase tracking-widest mb-1">진단 완료</p>
+              <p className="text-xs font-bold text-[#111111] uppercase tracking-widest mb-1">진단 완료</p>
               <h2 className="text-xl font-black text-gray-900">맞춤 마케팅 전략이 준비되었습니다</h2>
             </div>
             <div className="flex items-center gap-3 flex-wrap">
-              <div className="text-center bg-[#F8F9FC] rounded-lg px-4 py-2">
+              <div className="text-center bg-[#F5F5F5] rounded-none px-4 py-2">
                 <div className="text-xs text-gray-400 mb-0.5">예산 등급</div>
-                <div className="font-bold text-[#0F3460] text-sm">{budgetTier.label}</div>
+                <div className="font-bold text-[#111111] text-sm">{budgetTier.label}</div>
               </div>
-              <div className="text-center bg-[#F8F9FC] rounded-lg px-4 py-2">
+              <div className="text-center bg-[#F5F5F5] rounded-none px-4 py-2">
                 <div className="text-xs text-gray-400 mb-0.5">추천 채널</div>
-                <div className="font-bold text-[#0F3460] text-sm">{quote.items.length}개</div>
+                <div className="font-bold text-[#111111] text-sm">{quote.items.length}개</div>
               </div>
-              <div className="text-center bg-[#0F3460] rounded-lg px-4 py-2">
+              <div className="text-center bg-[#111111] rounded-none px-4 py-2">
                 <div className="text-xs text-blue-200 mb-0.5">월 예상 비용</div>
                 <div className="font-bold text-white text-sm">{formatKRW(quote.monthlyTotal)}</div>
               </div>
@@ -180,15 +185,15 @@ export default function ResultPage() {
 
         {/* Tabs */}
         <div className="no-print">
-          <div className="flex gap-0 bg-white border border-gray-100 rounded-xl shadow-sm overflow-hidden mb-6">
+          <div className="flex gap-0 bg-white border border-black/10 overflow-hidden mb-6">
             {TABS.map((tab, i) => (
               <button
                 key={i}
                 onClick={() => setActiveTab(i)}
-                className={`flex-1 py-3.5 text-sm font-semibold transition-all whitespace-nowrap ${
+                className={`flex-1 py-3.5 text-xs font-bold transition-all whitespace-nowrap uppercase tracking-widest ${
                   activeTab === i
-                    ? 'bg-[#0F3460] text-white'
-                    : 'text-gray-500 hover:bg-gray-50 hover:text-gray-800'
+                    ? 'bg-[#111111] text-white'
+                    : 'text-[#888888] hover:bg-[#F5F5F5] hover:text-[#111111]'
                 }`}
               >
                 {tab}
@@ -209,9 +214,9 @@ export default function ResultPage() {
                 const maxScore = recommendedChannels[0]?.score || 1;
                 const pct = Math.round((ch.score / maxScore) * 100);
                 return (
-                  <div key={ch.channel} className={`bg-white rounded-xl border border-gray-100 shadow-sm p-6 ${RANK_STYLES[i]}`}>
+                  <div key={ch.channel} className={`bg-white rounded-sm border border-black/10 p-6 ${RANK_STYLES[i]}`}>
                     <div className="flex items-start gap-4">
-                      <div className={`w-9 h-9 rounded-lg ${RANK_BADGES[i].bg} text-white flex items-center justify-center font-black text-xs flex-shrink-0`}>
+                      <div className={`w-9 h-9 rounded-none ${RANK_BADGES[i].bg} text-white flex items-center justify-center font-black text-xs flex-shrink-0`}>
                         {RANK_BADGES[i].label}
                       </div>
                       <div className="flex-1 min-w-0">
@@ -219,7 +224,7 @@ export default function ResultPage() {
                           <h4 className="text-base font-black text-gray-900">
                             {CHANNEL_NAMES[ch.channel] || ch.channel}
                           </h4>
-                          <span className={`text-xs font-semibold border px-2 py-0.5 rounded-full ${CHANNEL_CATEGORY_COLOR[ch.channel] || 'bg-gray-50 text-gray-600 border-gray-200'}`}>
+                          <span className={`text-xs font-semibold border px-2 py-0.5 rounded-full ${CHANNEL_CATEGORY_COLOR[ch.channel] || 'bg-[#F5F5F5] text-gray-600 border-gray-200'}`}>
                             {quoteItem?.category || '광고'}
                           </span>
                         </div>
@@ -231,18 +236,18 @@ export default function ResultPage() {
                         <div className="mb-3">
                           <div className="flex justify-between text-xs text-gray-400 mb-1">
                             <span>적합도 점수</span>
-                            <span className="font-semibold text-[#0F3460]">{pct}%</span>
+                            <span className="font-semibold text-[#111111]">{pct}%</span>
                           </div>
-                          <div className="h-1.5 bg-gray-100 rounded-full">
+                          <div className="h-0.5 bg-[#E5E5E5]">
                             <div
-                              className="h-full bg-[#0F3460] rounded-full transition-all"
+                              className="h-full bg-[#111111] transition-all"
                               style={{ width: `${pct}%` }}
                             />
                           </div>
                         </div>
 
                         {quoteItem && (
-                          <div className="flex gap-6 text-sm border-t border-gray-50 pt-3">
+                          <div className="flex gap-6 text-sm border-t border-black/5 pt-3">
                             {quoteItem.managementFee > 0 && (
                               <div>
                                 <span className="text-xs text-gray-400 block">월 관리비</span>
@@ -274,19 +279,19 @@ export default function ResultPage() {
                   <h3 className="text-sm font-bold text-gray-500 uppercase tracking-widest mt-6 mb-3">추가 고려 채널</h3>
                   <div className="grid md:grid-cols-3 gap-3">
                     {recommendedChannels.slice(3, 6).map(ch => (
-                      <div key={ch.channel} className="bg-white rounded-lg border border-gray-100 p-4 flex items-center justify-between">
+                      <div key={ch.channel} className="bg-white rounded-none border border-black/10 p-4 flex items-center justify-between">
                         <span className="font-semibold text-gray-700 text-sm">{CHANNEL_NAMES[ch.channel] || ch.channel}</span>
-                        <span className="text-xs text-gray-400 bg-gray-50 px-2 py-1 rounded">{ch.score}pt</span>
+                        <span className="text-xs text-gray-400 bg-[#F5F5F5] px-2 py-1 rounded">{ch.score}pt</span>
                       </div>
                     ))}
                   </div>
                 </>
               )}
 
-              <div className="mt-6 pt-6 border-t border-gray-100 flex justify-end">
+              <div className="mt-6 pt-6 border-t border-black/10 flex justify-end">
                 <button
                   onClick={() => setActiveTab(1)}
-                  className="flex items-center gap-2 text-sm font-semibold text-[#0F3460] hover:text-[#0a2744]"
+                  className="flex items-center gap-2 text-sm font-semibold text-[#111111] hover:text-black"
                 >
                   견적서 확인하기 <ArrowRight className="w-4 h-4" />
                 </button>
@@ -304,7 +309,7 @@ export default function ResultPage() {
                   { label: '월 광고비 합계', value: formatKRW(Math.round(quote.totalAdBudget * adBudgetMultiplier)), sub: '매체 광고 집행비' },
                   { label: '초기 세팅비 (1회)', value: formatKRW(quote.totalSetupFee), sub: '계정 세팅 및 제작비' },
                 ].map((item, i) => (
-                  <div key={i} className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
+                  <div key={i} className="bg-white rounded-sm border border-black/10 p-4">
                     <div className="text-xs text-gray-400 mb-1">{item.label}</div>
                     <div className="text-xl font-black text-gray-900 mb-1">{item.value}</div>
                     <div className="text-xs text-gray-400">{item.sub}</div>
@@ -313,7 +318,7 @@ export default function ResultPage() {
               </div>
 
               {/* Monthly total highlight */}
-              <div className="bg-[#0F3460] rounded-xl p-5 flex flex-col md:flex-row items-center justify-between gap-3 text-center md:text-left">
+              <div className="bg-[#111111] rounded-sm p-5 flex flex-col md:flex-row items-center justify-between gap-3 text-center md:text-left">
                 <div>
                   <div className="text-blue-200 text-xs font-semibold uppercase tracking-widest mb-1">월 예상 총 투자금액</div>
                   <div className="text-3xl font-black text-white">{formatKRW(totalMonthly)}</div>
@@ -327,10 +332,10 @@ export default function ResultPage() {
               </div>
 
               {/* Budget slider */}
-              <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-5">
+              <div className="bg-white rounded-sm border border-black/10 p-5">
                 <div className="flex items-center justify-between mb-3">
                   <h4 className="font-bold text-gray-900 text-sm">광고비 조절</h4>
-                  <span className="text-xs text-[#0F3460] font-bold bg-[#0F3460]/5 px-2 py-1 rounded">
+                  <span className="text-xs text-[#111111] font-bold bg-[#111111]/8 px-2 py-1 rounded">
                     ×{adBudgetMultiplier.toFixed(1)} 배율 적용
                   </span>
                 </div>
@@ -351,12 +356,12 @@ export default function ResultPage() {
               </div>
 
               {/* Quote table */}
-              <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
-                <div className="px-5 py-4 border-b border-gray-50">
+              <div className="bg-white rounded-sm border border-black/10 overflow-hidden">
+                <div className="px-5 py-4 border-b border-black/5">
                   <h4 className="font-bold text-gray-900 text-sm">서비스 항목별 견적</h4>
                 </div>
                 <table className="w-full text-sm">
-                  <thead className="bg-gray-50 border-b border-gray-100">
+                  <thead className="bg-[#F5F5F5] border-b border-black/10">
                     <tr>
                       <th className="text-left px-5 py-3 text-xs font-bold text-gray-400 uppercase tracking-wide">서비스</th>
                       <th className="text-right px-4 py-3 text-xs font-bold text-gray-400 uppercase tracking-wide">관리비</th>
@@ -367,7 +372,7 @@ export default function ResultPage() {
                   </thead>
                   <tbody className="divide-y divide-gray-50">
                     {quote.items.map((item) => (
-                      <tr key={item.id} className="hover:bg-gray-50/50 transition-colors">
+                      <tr key={item.id} className="hover:bg-[#F5F5F5]/50 transition-colors">
                         <td className="px-5 py-4">
                           <div className="font-semibold text-gray-800">{item.serviceName}</div>
                           <div className="text-xs text-gray-400 mt-0.5 leading-relaxed">{item.description.substring(0, 45)}...</div>
@@ -382,7 +387,7 @@ export default function ResultPage() {
                     ))}
                   </tbody>
                   <tfoot>
-                    <tr className="bg-[#0F3460]">
+                    <tr className="bg-[#111111]">
                       <td className="px-5 py-4 text-white font-bold text-sm">합계</td>
                       <td className="text-right px-4 py-4 text-blue-200 text-sm">{formatKRW(quote.totalManagementFee)}</td>
                       <td className="text-right px-4 py-4 text-blue-200 text-sm">{formatKRW(Math.round(quote.totalAdBudget * adBudgetMultiplier))}</td>
@@ -395,7 +400,7 @@ export default function ResultPage() {
 
               {/* Pie chart */}
               {pieData.length > 0 && (
-                <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-5">
+                <div className="bg-white rounded-sm border border-black/10 p-5">
                   <h4 className="font-bold text-gray-900 text-sm mb-4">채널별 예산 배분</h4>
                   <ResponsiveContainer width="100%" height={240}>
                     <PieChart>
@@ -425,7 +430,7 @@ export default function ResultPage() {
               {/* Download */}
               <button
                 onClick={() => setShowNameModal(true)}
-                className="w-full flex items-center justify-center gap-2 bg-[#0F3460] hover:bg-[#0a2744] text-white font-bold py-4 rounded-xl transition-all shadow-lg shadow-blue-900/20"
+                className="w-full flex items-center justify-center gap-2 bg-[#111111] hover:bg-black text-white font-bold py-4 transition-all uppercase tracking-widest text-sm"
               >
                 <Download className="w-4 h-4" />
                 견적서 PDF 다운로드
@@ -439,12 +444,12 @@ export default function ResultPage() {
               {/* KPI cards */}
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 {[
-                  { label: '예상 월 클릭수', value: expectedKPI.monthlyClicks.toLocaleString(), unit: '회', icon: <MousePointerClick className="w-4 h-4" />, color: 'text-[#0F3460]' },
+                  { label: '예상 월 클릭수', value: expectedKPI.monthlyClicks.toLocaleString(), unit: '회', icon: <MousePointerClick className="w-4 h-4" />, color: 'text-[#111111]' },
                   { label: '예상 월 노출수', value: expectedKPI.monthlyImpressions.toLocaleString(), unit: '회', icon: <Eye className="w-4 h-4" />, color: 'text-blue-500' },
                   { label: '예상 상담 문의', value: expectedKPI.monthlyConsultations.toString(), unit: '건', icon: <MessageSquare className="w-4 h-4" />, color: 'text-purple-600' },
                   { label: '예상 신규 등록', value: expectedKPI.monthlyNewStudents.toString(), unit: '명', icon: <UserCheck className="w-4 h-4" />, color: 'text-emerald-600' },
                 ].map((item, i) => (
-                  <div key={i} className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
+                  <div key={i} className="bg-white rounded-sm border border-black/10 p-4">
                     <div className={`flex items-center gap-1.5 mb-3 ${item.color}`}>
                       {item.icon}
                       <span className="text-xs font-semibold">{item.label}</span>
@@ -458,7 +463,7 @@ export default function ResultPage() {
               </div>
 
               {/* Line chart */}
-              <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-5">
+              <div className="bg-white rounded-sm border border-black/10 p-5">
                 <div className="flex items-center justify-between mb-5">
                   <h4 className="font-bold text-gray-900 text-sm">3개월 성과 예측 추이</h4>
                   <div className="flex items-center gap-1 text-xs text-gray-400">
@@ -474,20 +479,20 @@ export default function ResultPage() {
                     <YAxis yAxisId="right" orientation="right" tick={{ fontSize: 11, fill: '#9ca3af' }} axisLine={false} tickLine={false} />
                     <Tooltip contentStyle={{ borderRadius: 8, border: '1px solid #e5e7eb', fontSize: 12 }} />
                     <Legend wrapperStyle={{ fontSize: 12 }} />
-                    <Line yAxisId="left" type="monotone" dataKey="클릭수" stroke="#0F3460" strokeWidth={2.5} dot={{ r: 4 }} />
-                    <Line yAxisId="right" type="monotone" dataKey="상담문의" stroke="#8338EC" strokeWidth={2.5} dot={{ r: 4 }} />
-                    <Line yAxisId="right" type="monotone" dataKey="신규등록" stroke="#06D6A0" strokeWidth={2.5} dot={{ r: 4 }} />
+                    <Line yAxisId="left" type="monotone" dataKey="클릭수" stroke="#111111" strokeWidth={2.5} dot={{ r: 4 }} />
+                    <Line yAxisId="right" type="monotone" dataKey="상담문의" stroke="#555555" strokeWidth={2.5} dot={{ r: 4 }} />
+                    <Line yAxisId="right" type="monotone" dataKey="신규등록" stroke="#999999" strokeWidth={2.5} dot={{ r: 4 }} />
                   </LineChart>
                 </ResponsiveContainer>
               </div>
 
               {/* KPI table */}
-              <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
-                <div className="px-5 py-4 border-b border-gray-50">
+              <div className="bg-white rounded-sm border border-black/10 overflow-hidden">
+                <div className="px-5 py-4 border-b border-black/5">
                   <h4 className="font-bold text-gray-900 text-sm">채널별 KPI 벤치마크</h4>
                 </div>
                 <table className="w-full text-sm">
-                  <thead className="bg-gray-50 border-b border-gray-100">
+                  <thead className="bg-[#F5F5F5] border-b border-black/10">
                     <tr>
                       <th className="text-left px-5 py-3 text-xs font-bold text-gray-400 uppercase tracking-wide">채널</th>
                       <th className="text-right px-4 py-3 text-xs font-bold text-gray-400 uppercase tracking-wide">클릭율(CTR)</th>
@@ -498,7 +503,7 @@ export default function ResultPage() {
                   </thead>
                   <tbody className="divide-y divide-gray-50">
                     {expectedKPI.channelKPIs.map((kpi) => (
-                      <tr key={kpi.channel} className="hover:bg-gray-50/50 transition-colors">
+                      <tr key={kpi.channel} className="hover:bg-[#F5F5F5]/50 transition-colors">
                         <td className="px-5 py-3.5 font-semibold text-gray-800">{kpi.channelName}</td>
                         <td className="text-right px-4 py-3.5 text-gray-600">{kpi.ctr}</td>
                         <td className="text-right px-4 py-3.5 text-gray-600">{kpi.cpc}</td>
@@ -510,7 +515,7 @@ export default function ResultPage() {
                 </table>
               </div>
 
-              <div className="flex items-start gap-3 bg-amber-50 border border-amber-100 rounded-xl p-4">
+              <div className="flex items-start gap-3 bg-amber-50 border border-amber-100 rounded-sm p-4">
                 <AlertTriangle className="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0" />
                 <p className="text-xs text-amber-700 leading-relaxed">
                   본 수치는 동종 업계 평균 벤치마크 기반 예측값입니다. 실제 성과는 학원 특성, 광고 품질,
@@ -531,20 +536,20 @@ export default function ResultPage() {
               {/* Timeline */}
               <div className="space-y-3">
                 {actionPlan.map((plan, i) => (
-                  <div key={i} className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
-                    <div className="flex items-center gap-4 px-5 py-4 border-b border-gray-50">
-                      <div className="w-8 h-8 bg-[#0F3460] text-white rounded-lg flex items-center justify-center font-black text-xs flex-shrink-0">
+                  <div key={i} className="bg-white rounded-sm border border-black/10 overflow-hidden">
+                    <div className="flex items-center gap-4 px-5 py-4 border-b border-black/5">
+                      <div className="w-8 h-8 bg-[#111111] text-white rounded-none flex items-center justify-center font-black text-xs flex-shrink-0">
                         {String(i + 1).padStart(2, '0')}
                       </div>
                       <div>
-                        <div className="text-xs font-bold text-[#0F3460] uppercase tracking-widest">{plan.week}</div>
+                        <div className="text-xs font-bold text-[#111111] uppercase tracking-widest">{plan.week}</div>
                         <div className="font-bold text-gray-900 text-sm">{plan.title}</div>
                       </div>
                     </div>
                     <ul className="px-5 py-4 space-y-2">
                       {plan.tasks.map((task, j) => (
                         <li key={j} className="flex items-start gap-2.5 text-sm text-gray-600">
-                          <CheckCircle2 className="w-4 h-4 text-[#0F3460]/40 mt-0.5 flex-shrink-0" />
+                          <CheckCircle2 className="w-4 h-4 text-[#111111]/40 mt-0.5 flex-shrink-0" />
                           {task}
                         </li>
                       ))}
@@ -554,7 +559,7 @@ export default function ResultPage() {
               </div>
 
               {/* Free actions */}
-              <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-5">
+              <div className="bg-white rounded-sm border border-black/10 p-5">
                 <h4 className="font-bold text-gray-900 text-sm mb-4">즉시 실행 가능한 무료 액션</h4>
                 <div className="space-y-3">
                   {[
@@ -573,13 +578,13 @@ export default function ResultPage() {
               </div>
 
               {/* CTA banner */}
-              <div className="bg-[#0F3460] rounded-xl p-6">
+              <div className="bg-[#111111] rounded-sm p-6">
                 <div className="flex flex-col md:flex-row items-center justify-between gap-4">
                   <div>
                     <h4 className="text-white font-black text-lg mb-1">전문가 무료 상담</h4>
                     <p className="text-blue-200 text-sm">진단 결과를 바탕으로 더 정밀한 마케팅 전략을 제안드립니다.</p>
                   </div>
-                  <button className="flex-shrink-0 inline-flex items-center gap-2 bg-white hover:bg-gray-50 text-[#0F3460] font-bold px-5 py-3 rounded-lg text-sm transition-all">
+                  <button className="flex-shrink-0 inline-flex items-center gap-2 bg-white hover:bg-[#F5F5F5] text-[#111111] font-bold px-5 py-3 rounded-none text-sm transition-all">
                     <Phone className="w-4 h-4" />
                     무료 상담 신청
                   </button>
@@ -593,10 +598,10 @@ export default function ResultPage() {
         <div className="hidden print:block mt-8">
 
           {/* 추천 채널 */}
-          <h3 className="text-base font-black text-[#0F3460] mb-3 border-b pb-2">추천 마케팅 채널</h3>
+          <h3 className="text-base font-black text-[#111111] mb-3 border-b pb-2">추천 마케팅 채널</h3>
           <table className="w-full text-sm mb-8 border-collapse">
             <thead>
-              <tr className="bg-[#0F3460] text-white">
+              <tr className="bg-[#111111] text-white">
                 <th className="text-left px-3 py-2">순위</th>
                 <th className="text-left px-3 py-2">채널</th>
                 <th className="text-left px-3 py-2">추천 이유</th>
@@ -604,7 +609,7 @@ export default function ResultPage() {
             </thead>
             <tbody>
               {recommendedChannels.slice(0, 3).map((ch, i) => (
-                <tr key={ch.channel} className={i % 2 === 0 ? 'bg-gray-50' : 'bg-white'}>
+                <tr key={ch.channel} className={i % 2 === 0 ? 'bg-[#F5F5F5]' : 'bg-white'}>
                   <td className="px-3 py-2 font-bold">{i + 1}위</td>
                   <td className="px-3 py-2 font-semibold">{CHANNEL_NAMES[ch.channel] || ch.channel}</td>
                   <td className="px-3 py-2 text-gray-600 text-xs">{insights[ch.channel] || ''}</td>
@@ -614,10 +619,10 @@ export default function ResultPage() {
           </table>
 
           {/* 견적서 */}
-          <h3 className="text-base font-black text-[#0F3460] mb-3 border-b pb-2">맞춤 견적서</h3>
+          <h3 className="text-base font-black text-[#111111] mb-3 border-b pb-2">맞춤 견적서</h3>
           <table className="w-full text-sm mb-4 border-collapse">
             <thead>
-              <tr className="bg-[#0F3460] text-white">
+              <tr className="bg-[#111111] text-white">
                 <th className="text-left px-3 py-2">서비스</th>
                 <th className="text-right px-3 py-2">월 관리비</th>
                 <th className="text-right px-3 py-2">광고비(추천)</th>
@@ -627,7 +632,7 @@ export default function ResultPage() {
             </thead>
             <tbody>
               {quote.items.map((item, i) => (
-                <tr key={item.id} className={i % 2 === 0 ? 'bg-gray-50' : 'bg-white'}>
+                <tr key={item.id} className={i % 2 === 0 ? 'bg-[#F5F5F5]' : 'bg-white'}>
                   <td className="px-3 py-2">
                     <div className="font-semibold">{item.serviceName}</div>
                     <div className="text-xs text-gray-500">{item.description.substring(0, 50)}...</div>
@@ -640,7 +645,7 @@ export default function ResultPage() {
               ))}
             </tbody>
             <tfoot>
-              <tr className="bg-[#0F3460] text-white font-bold">
+              <tr className="bg-[#111111] text-white font-bold">
                 <td className="px-3 py-2">합계</td>
                 <td className="text-right px-3 py-2">{formatKRW(quote.totalManagementFee)}</td>
                 <td className="text-right px-3 py-2">{formatKRW(quote.totalAdBudget)}</td>
@@ -651,7 +656,7 @@ export default function ResultPage() {
           </table>
 
           {/* 기대 KPI */}
-          <h3 className="text-base font-black text-[#0F3460] mb-3 border-b pb-2">기대 성과 (월 기준)</h3>
+          <h3 className="text-base font-black text-[#111111] mb-3 border-b pb-2">기대 성과 (월 기준)</h3>
           <div className="grid grid-cols-4 gap-3 mb-6">
             {[
               { label: '예상 클릭수', value: `${expectedKPI.monthlyClicks.toLocaleString()}회` },
@@ -659,9 +664,9 @@ export default function ResultPage() {
               { label: '예상 상담 문의', value: `${expectedKPI.monthlyConsultations}건` },
               { label: '예상 신규 등록', value: `${expectedKPI.monthlyNewStudents}명` },
             ].map((item, i) => (
-              <div key={i} className="border border-gray-200 rounded-lg p-3 text-center">
+              <div key={i} className="border border-gray-200 rounded-none p-3 text-center">
                 <div className="text-xs text-gray-500 mb-1">{item.label}</div>
-                <div className="text-lg font-black text-[#0F3460]">{item.value}</div>
+                <div className="text-lg font-black text-[#111111]">{item.value}</div>
               </div>
             ))}
           </div>
@@ -709,14 +714,14 @@ export default function ResultPage() {
               <YAxis yAxisId="right" orientation="right" tick={{ fontSize: 10, fill: '#9ca3af' }} axisLine={false} tickLine={false} />
               <Tooltip contentStyle={{ fontSize: 11 }} />
               <Legend wrapperStyle={{ fontSize: 11 }} />
-              <Line yAxisId="left" type="monotone" dataKey="클릭수" stroke="#0F3460" strokeWidth={2} dot={{ r: 3 }} />
-              <Line yAxisId="right" type="monotone" dataKey="상담문의" stroke="#8338EC" strokeWidth={2} dot={{ r: 3 }} />
-              <Line yAxisId="right" type="monotone" dataKey="신규등록" stroke="#06D6A0" strokeWidth={2} dot={{ r: 3 }} />
+              <Line yAxisId="left" type="monotone" dataKey="클릭수" stroke="#111111" strokeWidth={2} dot={{ r: 3 }} />
+              <Line yAxisId="right" type="monotone" dataKey="상담문의" stroke="#555555" strokeWidth={2} dot={{ r: 3 }} />
+              <Line yAxisId="right" type="monotone" dataKey="신규등록" stroke="#999999" strokeWidth={2} dot={{ r: 3 }} />
             </LineChart>
           </div>
 
           <p className="text-xs text-gray-400 mt-4 border-t pt-3">
-            ※ 본 견적서는 참고용이며 실제 성과는 학원 특성 및 시장 상황에 따라 달라질 수 있습니다. · EduMarketing
+            ※ 본 견적서는 참고용이며 실제 성과는 학원 특성 및 시장 상황에 따라 달라질 수 있습니다. · STRAIGHT LAB (스트레이트랩)
           </p>
         </div>
 
@@ -725,7 +730,7 @@ export default function ResultPage() {
       {/* PDF Name Modal */}
       {showNameModal && (
         <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl shadow-2xl p-6 w-full max-w-sm border border-gray-100">
+          <div className="bg-white rounded-2xl shadow-2xl p-6 w-full max-w-sm border border-black/10">
             <h3 className="text-base font-black text-gray-900 mb-1">견적서 발급</h3>
             <p className="text-sm text-gray-500 mb-4">견적서에 표시할 학원명을 입력해 주세요.</p>
             <input
@@ -733,18 +738,18 @@ export default function ResultPage() {
               placeholder="예: OO수학학원 (생략 가능)"
               value={hagwonName}
               onChange={(e) => setHagwonName(e.target.value)}
-              className="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-[#0F3460] mb-4 transition-colors"
+              className="w-full border border-gray-200 rounded-none px-4 py-3 text-sm focus:outline-none focus:border-[#0F3460] mb-4 transition-colors"
             />
             <div className="flex gap-2">
               <button
                 onClick={() => setShowNameModal(false)}
-                className="flex-1 py-3 border border-gray-200 rounded-lg text-sm font-semibold text-gray-600 hover:bg-gray-50 transition-colors"
+                className="flex-1 py-3 border border-gray-200 rounded-none text-sm font-semibold text-gray-600 hover:bg-[#F5F5F5] transition-colors"
               >
                 취소
               </button>
               <button
                 onClick={() => { setShowNameModal(false); handlePrint(); }}
-                className="flex-1 py-3 bg-[#0F3460] text-white rounded-lg text-sm font-bold hover:bg-[#0a2744] transition-colors"
+                className="flex-1 py-3 bg-[#111111] text-white rounded-none text-sm font-bold hover:bg-black transition-colors"
               >
                 PDF 저장
               </button>
