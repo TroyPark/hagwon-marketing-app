@@ -26,15 +26,27 @@ create table if not exists customer (
 -- RLS 활성화
 alter table customer enable row level security;
 
--- 인증된 사용자(관리자)만 전체 관리 가능
-create policy "Authenticated users can manage customers"
-  on customer for all
-  using (auth.role() = 'authenticated');
+-- 기존 정책 삭제 후 재생성 (충돌 방지)
+drop policy if exists "Authenticated users can manage customers" on customer;
+drop policy if exists "Anyone can submit a consultation" on customer;
 
--- 비로그인 사용자도 상담 신청(INSERT) 가능
-create policy "Anyone can submit a consultation"
+-- 비로그인 사용자도 INSERT 가능 (설문 제출)
+create policy "Anyone can insert customer"
   on customer for insert
   with check (true);
+
+-- 인증된 사용자(관리자)는 SELECT / UPDATE / DELETE 가능
+create policy "Authenticated users can select customers"
+  on customer for select
+  using (auth.role() = 'authenticated');
+
+create policy "Authenticated users can update customers"
+  on customer for update
+  using (auth.role() = 'authenticated');
+
+create policy "Authenticated users can delete customers"
+  on customer for delete
+  using (auth.role() = 'authenticated');
 
 -- =============================================
 -- 관리자 계정 role 설정 (최초 1회 실행)

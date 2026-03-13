@@ -271,7 +271,7 @@ export default function SurveyPage() {
       const resultData = { budgetTier, recommendedChannels, quote, expectedKPI, insights, actionPlan };
 
       // 2. Supabase customer 테이블에 저장
-      await supabase.from('customer').insert({
+      const { error: insertError } = await supabase.from('customer').insert({
         hagwon_name: contactData.hagwon_name,
         contact_name: contactData.contact_name,
         phone: contactData.phone,
@@ -282,6 +282,7 @@ export default function SurveyPage() {
         monthly_total: quote.monthlyTotal,
         diagnosis_result: resultData,
       });
+      if (insertError) console.error('[CRM insert error]', insertError);
 
       // 3. 결과 저장 후 이동
       useSurveyStore.getState().setResult(resultData);
