@@ -71,7 +71,10 @@ export default function DashboardPage() {
       .from('customer')
       .select('*')
       .order('created_at', { ascending: false });
-    if (!error && data) {
+    if (error) {
+      console.error('[CRM fetch error]', error);
+    } else if (data) {
+      console.log('[CRM] fetched', data.length, 'records');
       setCustomers(data as Customer[]);
     }
     setLoading(false);
