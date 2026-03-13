@@ -273,10 +273,15 @@ export default function HomePage() {
       <footer className="px-6 py-10 bg-[#0A0A0A] border-t border-white/5">
         <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
           <Image src="/bi_v1.png" alt="STRAIGHT LAB" width={120} height={34} className="h-8 w-auto brightness-0 invert opacity-40" unoptimized />
-          <p className="text-[#555555] text-xs leading-relaxed max-w-md">
-            본 서비스는 참고용 견적 제공을 목적으로 하며, 실제 견적은 상담을 통해 확정됩니다.<br />
-            © 2025 STRAIGHT LAB. All rights reserved.
-          </p>
+          <div>
+            <p className="text-[#555555] text-xs leading-relaxed max-w-md mb-2">
+              본 서비스는 참고용 견적 제공을 목적으로 하며, 실제 견적은 상담을 통해 확정됩니다.<br />
+              © 2025 STRAIGHT LAB. All rights reserved.
+            </p>
+            <Link href="/privacy" prefetch={false} className="text-[#444444] hover:text-white text-xs transition-colors underline underline-offset-2">
+              개인정보 처리방침
+            </Link>
+          </div>
           <Link
             href="/login"
             prefetch={false}
