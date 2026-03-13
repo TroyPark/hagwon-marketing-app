@@ -14,8 +14,8 @@ export default function HomePage() {
         <div className="max-w-5xl mx-auto">
           {/* Label */}
           <div className="flex items-center gap-3 mb-10">
-            <div className="h-px w-10 bg-[#111111]" />
-            <span className="text-xs font-bold text-[#111111] uppercase tracking-[0.2em]">학원 마케팅 전문 기업</span>
+            <div className="h-px w-10 bg-[#DC2626]" />
+            <span className="text-xs font-bold text-[#DC2626] uppercase tracking-[0.2em]">학원 마케팅 전문 기업</span>
           </div>
           <h1 className="text-[clamp(2.8rem,7vw,5.5rem)] font-black text-[#111111] leading-[1.0] tracking-tight mb-8">
             학원 마케팅,<br />
@@ -23,7 +23,7 @@ export default function HomePage() {
             <span className="text-[#111111]">설계합니다.</span>
           </h1>
           <div className="flex items-start gap-px mb-10">
-            <div className="w-1 h-16 bg-[#111111]" />
+            <div className="w-1 h-16 bg-[#DC2626]" />
             <p className="text-lg text-[#555555] pl-5 max-w-xl leading-relaxed">
               업종·규모·예산을 분석해 최적의 광고 채널과 상세 견적서를 즉시 제공합니다.
               수백 개 학원 데이터 기반의 정밀한 마케팅 진단입니다.
@@ -33,7 +33,7 @@ export default function HomePage() {
             <Link
               href="/survey"
               prefetch={false}
-              className="inline-flex items-center gap-3 bg-[#111111] hover:bg-black text-white font-bold text-sm px-8 py-4 transition-colors tracking-widest uppercase"
+              className="inline-flex items-center gap-3 bg-[#DC2626] hover:bg-red-800 text-white font-bold text-sm px-8 py-4 transition-colors tracking-widest uppercase"
             >
               무료 진단 받기
               <ArrowRight className="w-4 h-4" />
@@ -63,8 +63,8 @@ export default function HomePage() {
       <section className="px-6 py-24 bg-white border-b border-black/10">
         <div className="max-w-5xl mx-auto">
           <div className="flex items-center gap-3 mb-14">
-            <div className="h-px w-10 bg-[#111111]" />
-            <span className="text-xs font-bold text-[#111111] uppercase tracking-[0.2em]">서비스 특징</span>
+            <div className="h-px w-10 bg-[#DC2626]" />
+            <span className="text-xs font-bold text-[#DC2626] uppercase tracking-[0.2em]">서비스 특징</span>
           </div>
           <h2 className="text-4xl font-black text-[#111111] mb-14 leading-tight">
             진단부터 실행까지,<br />스트레이트랩이 설계합니다.
@@ -88,7 +88,7 @@ export default function HomePage() {
               },
             ].map((item, i) => (
               <div key={i} className={`p-8 ${i < 2 ? 'border-r border-black/10' : ''}`}>
-                <div className="w-8 h-8 bg-[#111111] text-white flex items-center justify-center mb-6">
+                <div className="w-8 h-8 bg-[#DC2626] text-white flex items-center justify-center mb-6">
                   {item.icon}
                 </div>
                 <h3 className="text-base font-black text-[#111111] mb-3 tracking-tight">{item.title}</h3>
@@ -103,8 +103,8 @@ export default function HomePage() {
       <section className="px-6 py-24 bg-[#F5F5F5] border-b border-black/10">
         <div className="max-w-5xl mx-auto">
           <div className="flex items-center gap-3 mb-14">
-            <div className="h-px w-10 bg-[#111111]" />
-            <span className="text-xs font-bold text-[#111111] uppercase tracking-[0.2em]">진단 프로세스</span>
+            <div className="h-px w-10 bg-[#DC2626]" />
+            <span className="text-xs font-bold text-[#DC2626] uppercase tracking-[0.2em]">진단 프로세스</span>
           </div>
           <h2 className="text-4xl font-black text-[#111111] mb-14 leading-tight">
             3단계로 완성되는<br />마케팅 전략
@@ -132,7 +132,7 @@ export default function HomePage() {
             ].map((item, i) => (
               <div key={i} className="relative">
                 <div className="text-7xl font-black text-[#111111]/8 leading-none mb-4 select-none">{item.step}</div>
-                <div className="h-px w-12 bg-[#111111] mb-4" />
+                <div className="h-px w-12 bg-[#DC2626] mb-4" />
                 <h3 className="text-lg font-black text-[#111111] mb-2 tracking-tight">{item.title}</h3>
                 <p className="text-sm text-[#666666] leading-relaxed mb-4">{item.desc}</p>
                 <span className="inline-flex items-center gap-1.5 text-xs text-[#111111] font-bold uppercase tracking-widest">
@@ -149,8 +149,8 @@ export default function HomePage() {
       <section className="px-6 py-24 bg-white border-b border-black/10">
         <div className="max-w-5xl mx-auto">
           <div className="flex items-center gap-3 mb-14">
-            <div className="h-px w-10 bg-[#111111]" />
-            <span className="text-xs font-bold text-[#111111] uppercase tracking-[0.2em]">고객 후기</span>
+            <div className="h-px w-10 bg-[#DC2626]" />
+            <span className="text-xs font-bold text-[#DC2626] uppercase tracking-[0.2em]">고객 후기</span>
           </div>
           <h2 className="text-4xl font-black text-[#111111] mb-14 leading-tight">
             실제 원장님의 경험
@@ -203,7 +203,7 @@ export default function HomePage() {
               { icon: <Clock className="w-4 h-4" />, title: '즉시 결과', desc: '설문 완료 즉시 결과를 확인하고 PDF로 저장할 수 있습니다.' },
             ].map((item, i) => (
               <div key={i} className="flex gap-4 px-8 py-6">
-                <div className="w-8 h-8 bg-[#111111] text-white flex items-center justify-center flex-shrink-0">
+                <div className="w-8 h-8 bg-[#DC2626] text-white flex items-center justify-center flex-shrink-0">
                   {item.icon}
                 </div>
                 <div>

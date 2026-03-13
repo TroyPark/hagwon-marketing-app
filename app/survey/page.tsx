@@ -29,7 +29,7 @@ function ProgressBar({ current, total, sectionIndex, isContactStep }: {
           <span>{pct}% 완료</span>
         </div>
         <div className="h-0.5 bg-[#E5E5E5] overflow-hidden">
-          <div className="h-full bg-[#111111] transition-all duration-500" style={{ width: `${pct}%` }} />
+          <div className="h-full bg-[#DC2626] transition-all duration-500" style={{ width: `${pct}%` }} />
         </div>
       </div>
     </div>
@@ -75,8 +75,8 @@ function QuestionBlock({
                 onClick={() => question.type === 'multiple_choice' ? handleMultiple(opt.value) : handleSingle(opt.value)}
                 className={`text-left px-4 py-3 border transition-all text-sm min-h-[48px] flex items-center gap-3 ${
                   isSelected
-                    ? 'border-[#111111] bg-[#111111] text-white'
-                    : 'border-[#E5E5E5] bg-white text-[#444444] hover:border-[#111111]/40 hover:bg-[#F5F5F5]'
+                    ? 'border-[#DC2626] bg-[#DC2626] text-white'
+                    : 'border-[#E5E5E5] bg-white text-[#444444] hover:border-[#DC2626]/40 hover:bg-[#FFF5F5]'
                 }`}
               >
                 {question.type === 'multiple_choice' && (
@@ -135,7 +135,7 @@ function ContactStep({
     <form onSubmit={handleSubmit} className="animate-fade-in-up">
       <div className="mb-8">
         <div className="flex items-center gap-2 mb-3">
-          <div className="h-px w-6 bg-[#111111]" />
+          <div className="h-px w-6 bg-[#DC2626]" />
           <p className="text-xs font-bold text-[#111111] uppercase tracking-[0.2em]">연락처 입력</p>
         </div>
         <h1 className="text-2xl font-black text-[#111111] tracking-tight">거의 다 됐습니다!</h1>
@@ -208,7 +208,7 @@ function ContactStep({
         </button>
         <button
           type="submit" disabled={submitting}
-          className="flex items-center gap-2 bg-[#111111] hover:bg-black disabled:opacity-40 text-white font-bold px-7 py-3 transition-all text-sm uppercase tracking-widest"
+          className="flex items-center gap-2 bg-[#DC2626] hover:bg-red-800 disabled:opacity-40 text-white font-bold px-7 py-3 transition-all text-sm uppercase tracking-widest"
         >
           {submitting ? (
             <><Loader2 className="w-4 h-4 animate-spin" /> 분석 중...</>
@@ -344,7 +344,7 @@ export default function SurveyPage() {
               {/* Section title */}
               <div className="mb-8 animate-fade-in-up">
                 <div className="flex items-center gap-2 mb-3">
-                  <div className="h-px w-6 bg-[#111111]" />
+                  <div className="h-px w-6 bg-[#DC2626]" />
                   <p className="text-xs font-bold text-[#111111] uppercase tracking-[0.2em]">
                     섹션 {currentSection + 1} / {SURVEY_SECTIONS.length + 1}
                   </p>
@@ -379,7 +379,7 @@ export default function SurveyPage() {
                 </button>
                 <button
                   onClick={handleNext}
-                  className="flex items-center gap-2 bg-[#111111] hover:bg-black text-white font-bold px-7 py-3 transition-all text-sm uppercase tracking-widest"
+                  className="flex items-center gap-2 bg-[#DC2626] hover:bg-red-800 text-white font-bold px-7 py-3 transition-all text-sm uppercase tracking-widest"
                 >
                   {currentSection < SURVEY_SECTIONS.length - 1
                     ? <>다음 단계 <ChevronRight className="w-4 h-4" /></>

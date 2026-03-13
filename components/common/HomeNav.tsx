@@ -26,7 +26,7 @@ export default function HomeNav() {
             <Link
               href="/member/dashboard"
               prefetch={false}
-              className="text-xs font-bold text-[#111111] border border-[#111111] px-4 py-2.5 hover:bg-[#111111] hover:text-white transition-colors uppercase tracking-widest"
+              className="text-xs font-bold text-[#DC2626] border border-[#DC2626] px-4 py-2.5 hover:bg-[#DC2626] hover:text-white transition-colors uppercase tracking-widest"
             >
               마이페이지
             </Link>
@@ -42,7 +42,7 @@ export default function HomeNav() {
               <Link
                 href="/member/login"
                 prefetch={false}
-                className="text-xs font-bold text-[#111111] border border-[#111111] px-4 py-2.5 hover:bg-[#111111] hover:text-white transition-colors uppercase tracking-widest"
+                className="text-xs font-bold text-[#DC2626] border border-[#DC2626] px-4 py-2.5 hover:bg-[#DC2626] hover:text-white transition-colors uppercase tracking-widest"
               >
                 로그인
               </Link>
@@ -51,7 +51,7 @@ export default function HomeNav() {
           <Link
             href="/survey"
             prefetch={false}
-            className="text-sm font-bold text-white bg-[#111111] px-5 py-2.5 hover:bg-black transition-colors tracking-wide"
+            className="text-sm font-bold text-white bg-[#DC2626] px-5 py-2.5 hover:bg-red-800 transition-colors tracking-wide"
           >
             무료 진단 시작 →
           </Link>
