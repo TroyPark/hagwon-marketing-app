@@ -19,15 +19,7 @@ export default function AdminLoginPage() {
     const { data, error: authError } = await supabase.auth.signInWithPassword({ email, password });
 
     if (authError || !data.user) {
-      setError('이메일 또는 비밀번호가 올바르지 않습니다.');
-      setLoading(false);
-      return;
-    }
-
-    const role = data.user.user_metadata?.role;
-    if (role !== 'admin') {
-      await supabase.auth.signOut();
-      setError('관리자 계정이 아닙니다. 일반 회원 로그인을 이용해 주세요.');
+      setError('이메일 또는 비밀번호가 올바르지 않습니다. 이메일 인증을 완료하셨나요?');
       setLoading(false);
       return;
     }
