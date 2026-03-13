@@ -97,7 +97,7 @@ export default function ResultPage() {
 
   useEffect(() => {
     if (hasHydrated && !result) {
-      window.location.href = (process.env.NODE_ENV === 'production' ? '/hagwon-marketing-app' : '') + '/survey';
+      window.location.href = '/survey';
     }
   }, [hasHydrated, result]);
 

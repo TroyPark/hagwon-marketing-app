@@ -24,8 +24,7 @@ export default function AdminLoginPage() {
       return;
     }
 
-    const base = process.env.NODE_ENV === 'production' ? '/hagwon-marketing-app' : '';
-    window.location.href = `${base}/dashboard`;
+    window.location.href = '/dashboard';
   };
 
   return (

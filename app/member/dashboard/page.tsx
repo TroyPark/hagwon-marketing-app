@@ -13,8 +13,7 @@ export default function MemberDashboardPage() {
   useEffect(() => {
     supabase.auth.getSession().then(async ({ data: { session } }) => {
       if (!session) {
-        const base = process.env.NODE_ENV === 'production' ? '/hagwon-marketing-app' : '';
-        window.location.href = `${base}/member/login`;
+        window.location.href = '/member/login';
         return;
       }
       setUser({
@@ -34,15 +33,12 @@ export default function MemberDashboardPage() {
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
-    const base = process.env.NODE_ENV === 'production' ? '/hagwon-marketing-app' : '';
-    window.location.href = `${base}/member/login`;
+    window.location.href = '/member/login';
   };
 
   const STATUS_LABEL: Record<string, string> = {
     new: '접수완료', contacted: '연락완료', consulting: '상담중', contracted: '계약완료', hold: '보류',
   };
-
-  const base = process.env.NODE_ENV === 'production' ? '/hagwon-marketing-app' : '';
 
   if (!user) return null;
 
@@ -82,7 +78,7 @@ export default function MemberDashboardPage() {
               <h2 className="text-white font-black text-lg mb-1">마케팅 진단 시작하기</h2>
               <p className="text-white/50 text-sm">5분 설문으로 맞춤 전략과 견적서를 즉시 받아보세요.</p>
             </div>
-            <Link href={`${base}/survey`} prefetch={false}
+            <Link href="/survey" prefetch={false}
               className="flex-shrink-0 inline-flex items-center gap-2 bg-white hover:bg-[#F0F0F0] text-[#111111] font-bold px-5 py-3 text-sm uppercase tracking-widest transition-colors">
               진단 시작
               <ArrowRight className="w-4 h-4" />

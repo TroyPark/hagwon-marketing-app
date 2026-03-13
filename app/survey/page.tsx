@@ -288,7 +288,7 @@ export default function SurveyPage() {
       useSurveyStore.getState().setResult(resultData);
       sessionStorage.setItem('survey-result', JSON.stringify(resultData));
       setCompleted(true);
-      window.location.href = (process.env.NODE_ENV === 'production' ? '/hagwon-marketing-app' : '') + '/result';
+      window.location.href = '/result';
     } catch (e) {
       console.error('결과 생성 오류:', e);
       alert('결과 생성 중 오류가 발생했습니다. 다시 시도해 주세요.');
