@@ -62,7 +62,7 @@ export default function MemberDashboardPage() {
         {/* Welcome */}
         <div className="mb-10">
           <div className="flex items-center gap-2 mb-3">
-            <div className="h-px w-8 bg-[#DC2626]" />
+            <div className="h-px w-8 bg-[#96051D]" />
             <span className="text-[10px] font-bold text-[#888888] uppercase tracking-[0.2em]">마이페이지</span>
           </div>
           <h1 className="text-2xl font-black text-[#111111] tracking-tight">
@@ -72,7 +72,7 @@ export default function MemberDashboardPage() {
         </div>
 
         {/* CTA - Start diagnosis */}
-        <div className="bg-[#DC2626] p-6 mb-6">
+        <div className="bg-[#96051D] p-6 mb-6">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div>
               <h2 className="text-white font-black text-lg mb-1">마케팅 진단 시작하기</h2>

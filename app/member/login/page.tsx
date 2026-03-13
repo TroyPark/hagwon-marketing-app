@@ -77,7 +77,7 @@ export default function MemberLoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-[#DC2626] hover:bg-red-800 disabled:opacity-40 text-white font-bold py-3.5 text-sm uppercase tracking-widest transition-colors"
+              className="w-full bg-[#96051D] hover:bg-[#6B0414] disabled:opacity-40 text-white font-bold py-3.5 text-sm uppercase tracking-widest transition-colors"
             >
               {loading ? '로그인 중...' : '로그인'}
             </button>

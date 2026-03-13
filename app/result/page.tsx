@@ -225,8 +225,8 @@ export default function ResultPage() {
                 onClick={() => setActiveTab(i)}
                 className={`flex-1 py-3.5 text-xs font-bold transition-all whitespace-nowrap uppercase tracking-widest ${
                   activeTab === i
-                    ? 'bg-[#DC2626] text-white'
-                    : 'text-[#888888] hover:bg-[#FFF5F5] hover:text-[#DC2626]'
+                    ? 'bg-[#96051D] text-white'
+                    : 'text-[#888888] hover:bg-[#FDF2F4] hover:text-[#96051D]'
                 }`}
               >
                 {tab}
@@ -463,7 +463,7 @@ export default function ResultPage() {
               {/* Download */}
               <button
                 onClick={() => setShowNameModal(true)}
-                className="w-full flex items-center justify-center gap-2 bg-[#DC2626] hover:bg-red-800 text-white font-bold py-4 transition-all uppercase tracking-widest text-sm"
+                className="w-full flex items-center justify-center gap-2 bg-[#96051D] hover:bg-[#6B0414] text-white font-bold py-4 transition-all uppercase tracking-widest text-sm"
               >
                 <Download className="w-4 h-4" />
                 견적서 PDF 다운로드
@@ -784,7 +784,7 @@ export default function ResultPage() {
                 <p className="text-sm text-[#666666]">빠른 시일 내에 연락드리겠습니다.</p>
                 <button
                   onClick={() => { setShowConsultModal(false); setConsultDone(false); }}
-                  className="mt-6 bg-[#DC2626] text-white font-bold px-6 py-2.5 text-sm uppercase tracking-widest hover:bg-red-800 transition-colors"
+                  className="mt-6 bg-[#96051D] text-white font-bold px-6 py-2.5 text-sm uppercase tracking-widest hover:bg-[#6B0414] transition-colors"
                 >
                   닫기
                 </button>
@@ -822,7 +822,7 @@ export default function ResultPage() {
                     취소
                   </button>
                   <button type="submit" disabled={consultLoading}
-                    className="flex-1 py-3 bg-[#DC2626] hover:bg-red-800 disabled:opacity-40 text-white font-bold text-sm uppercase tracking-widest transition-colors">
+                    className="flex-1 py-3 bg-[#96051D] hover:bg-[#6B0414] disabled:opacity-40 text-white font-bold text-sm uppercase tracking-widest transition-colors">
                     {consultLoading ? '제출 중...' : '신청하기'}
                   </button>
                 </div>
@@ -854,7 +854,7 @@ export default function ResultPage() {
               </button>
               <button
                 onClick={() => { setShowNameModal(false); handlePrint(); }}
-                className="flex-1 py-3 bg-[#DC2626] text-white rounded-none text-sm font-bold hover:bg-red-800 transition-colors"
+                className="flex-1 py-3 bg-[#96051D] text-white rounded-none text-sm font-bold hover:bg-[#6B0414] transition-colors"
               >
                 PDF 저장
               </button>
