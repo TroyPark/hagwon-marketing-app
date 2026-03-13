@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { useReactToPrint } from 'react-to-print';
 import Image from 'next/image';
+import { supabase } from '@/lib/supabase';
 
 const CHART_COLORS = ['#111111', '#555555', '#888888', '#AAAAAA', '#333333', '#777777'];
 
@@ -72,6 +73,11 @@ export default function ResultPage() {
   const [adBudgetMultiplier, setAdBudgetMultiplier] = useState(1);
   const [showNameModal, setShowNameModal] = useState(false);
   const [hagwonName, setHagwonName] = useState('');
+  const [showConsultModal, setShowConsultModal] = useState(false);
+  const [consultForm, setConsultForm] = useState({ hagwon_name: '', contact_name: '', phone: '', email: '' });
+  const [consultLoading, setConsultLoading] = useState(false);
+  const [consultDone, setConsultDone] = useState(false);
+  const [consultError, setConsultError] = useState('');
   const printRef = useRef<HTMLDivElement>(null);
 
   const [hasHydrated, setHasHydrated] = useState(false);
@@ -99,6 +105,33 @@ export default function ResultPage() {
     content: () => printRef.current,
     documentTitle: `${hagwonName || '학원'}_마케팅_견적서`,
   });
+
+  const handleConsultSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setConsultLoading(true);
+    setConsultError('');
+    const { error } = await supabase.from('leads').insert({
+      hagwon_name: consultForm.hagwon_name,
+      contact_name: consultForm.contact_name,
+      phone: consultForm.phone,
+      email: consultForm.email || null,
+      status: 'new',
+      budget_tier: result ? (result as RecommendationResult).budgetTier?.label : null,
+      recommended_channels: result
+        ? (result as RecommendationResult).recommendedChannels?.slice(0, 5).map(
+            (ch: { channel: string }) => ch.channel
+          )
+        : null,
+      monthly_total: result ? (result as RecommendationResult).quote?.monthlyTotal : null,
+      diagnosis_result: result,
+    });
+    if (error) {
+      setConsultError('오류가 발생했습니다. 다시 시도해 주세요.');
+    } else {
+      setConsultDone(true);
+    }
+    setConsultLoading(false);
+  };
 
   if (!hasHydrated || !result) return null;
 
@@ -578,15 +611,18 @@ export default function ResultPage() {
               </div>
 
               {/* CTA banner */}
-              <div className="bg-[#111111] rounded-sm p-6">
+              <div className="bg-[#111111] p-6">
                 <div className="flex flex-col md:flex-row items-center justify-between gap-4">
                   <div>
                     <h4 className="text-white font-black text-lg mb-1">전문가 무료 상담</h4>
-                    <p className="text-blue-200 text-sm">진단 결과를 바탕으로 더 정밀한 마케팅 전략을 제안드립니다.</p>
+                    <p className="text-white/50 text-sm">진단 결과를 바탕으로 더 정밀한 마케팅 전략을 제안드립니다.</p>
                   </div>
-                  <button className="flex-shrink-0 inline-flex items-center gap-2 bg-white hover:bg-[#F5F5F5] text-[#111111] font-bold px-5 py-3 rounded-none text-sm transition-all">
+                  <button
+                    onClick={() => setShowConsultModal(true)}
+                    className="flex-shrink-0 inline-flex items-center gap-2 bg-white hover:bg-[#F0F0F0] text-[#111111] font-bold px-5 py-3 text-sm transition-all uppercase tracking-widest"
+                  >
                     <Phone className="w-4 h-4" />
-                    무료 상담 신청
+                    상담 신청하기
                   </button>
                 </div>
               </div>
@@ -726,6 +762,75 @@ export default function ResultPage() {
         </div>
 
       </div>
+
+      {/* Consultation Modal */}
+      {showConsultModal && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white w-full max-w-md border border-black/10">
+            <div className="px-6 py-5 border-b border-black/10 flex items-center justify-between">
+              <div>
+                <h3 className="text-base font-black text-[#111111]">무료 상담 신청</h3>
+                <p className="text-xs text-[#888888] mt-0.5">담당자가 1영업일 내 연락드립니다.</p>
+              </div>
+              <button onClick={() => { setShowConsultModal(false); setConsultDone(false); setConsultError(''); }} className="text-[#AAAAAA] hover:text-[#111111]">✕</button>
+            </div>
+
+            {consultDone ? (
+              <div className="px-6 py-10 text-center">
+                <div className="w-10 h-10 bg-[#111111] flex items-center justify-center mx-auto mb-4">
+                  <span className="text-white font-black text-lg">✓</span>
+                </div>
+                <h4 className="font-black text-[#111111] mb-2">신청 완료!</h4>
+                <p className="text-sm text-[#666666]">빠른 시일 내에 연락드리겠습니다.</p>
+                <button
+                  onClick={() => { setShowConsultModal(false); setConsultDone(false); }}
+                  className="mt-6 bg-[#111111] text-white font-bold px-6 py-2.5 text-sm uppercase tracking-widest hover:bg-black transition-colors"
+                >
+                  닫기
+                </button>
+              </div>
+            ) : (
+              <form onSubmit={handleConsultSubmit} className="px-6 py-5 space-y-4">
+                <div>
+                  <label className="block text-[10px] font-bold text-[#444444] uppercase tracking-widest mb-1.5">학원명 *</label>
+                  <input required value={consultForm.hagwon_name} onChange={e => setConsultForm(p => ({ ...p, hagwon_name: e.target.value }))}
+                    placeholder="OO수학학원"
+                    className="w-full border border-black/20 px-3 py-2.5 text-sm text-[#111111] focus:outline-none focus:border-[#111111] transition-colors placeholder:text-[#CCCCCC]" />
+                </div>
+                <div>
+                  <label className="block text-[10px] font-bold text-[#444444] uppercase tracking-widest mb-1.5">담당자명 *</label>
+                  <input required value={consultForm.contact_name} onChange={e => setConsultForm(p => ({ ...p, contact_name: e.target.value }))}
+                    placeholder="홍길동 원장"
+                    className="w-full border border-black/20 px-3 py-2.5 text-sm text-[#111111] focus:outline-none focus:border-[#111111] transition-colors placeholder:text-[#CCCCCC]" />
+                </div>
+                <div>
+                  <label className="block text-[10px] font-bold text-[#444444] uppercase tracking-widest mb-1.5">연락처 *</label>
+                  <input required value={consultForm.phone} onChange={e => setConsultForm(p => ({ ...p, phone: e.target.value }))}
+                    placeholder="010-0000-0000"
+                    className="w-full border border-black/20 px-3 py-2.5 text-sm text-[#111111] focus:outline-none focus:border-[#111111] transition-colors placeholder:text-[#CCCCCC]" />
+                </div>
+                <div>
+                  <label className="block text-[10px] font-bold text-[#444444] uppercase tracking-widest mb-1.5">이메일 (선택)</label>
+                  <input value={consultForm.email} onChange={e => setConsultForm(p => ({ ...p, email: e.target.value }))}
+                    placeholder="example@email.com" type="email"
+                    className="w-full border border-black/20 px-3 py-2.5 text-sm text-[#111111] focus:outline-none focus:border-[#111111] transition-colors placeholder:text-[#CCCCCC]" />
+                </div>
+                {consultError && <p className="text-xs text-red-600 font-medium">{consultError}</p>}
+                <div className="flex gap-2 pt-2">
+                  <button type="button" onClick={() => setShowConsultModal(false)}
+                    className="flex-1 py-3 border border-black/20 text-sm font-bold text-[#666666] hover:bg-[#F5F5F5] transition-colors">
+                    취소
+                  </button>
+                  <button type="submit" disabled={consultLoading}
+                    className="flex-1 py-3 bg-[#111111] hover:bg-black disabled:opacity-40 text-white font-bold text-sm uppercase tracking-widest transition-colors">
+                    {consultLoading ? '제출 중...' : '신청하기'}
+                  </button>
+                </div>
+              </form>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* PDF Name Modal */}
       {showNameModal && (
