@@ -12,13 +12,22 @@ export default function HomePage() {
           <Link href="/" prefetch={false} className="flex items-center hover:opacity-60 transition-opacity">
             <Image src="/bi_v1.png" alt="STRAIGHT LAB" width={148} height={42} className="h-9 w-auto" unoptimized />
           </Link>
-          <Link
-            href="/survey"
-            prefetch={false}
-            className="text-sm font-bold text-white bg-[#111111] px-5 py-2.5 hover:bg-black transition-colors tracking-wide"
-          >
-            무료 진단 시작 →
-          </Link>
+          <div className="flex items-center gap-3">
+            <Link
+              href="/member/login"
+              prefetch={false}
+              className="text-xs font-bold text-[#111111] border border-[#111111] px-4 py-2.5 hover:bg-[#111111] hover:text-white transition-colors uppercase tracking-widest"
+            >
+              로그인
+            </Link>
+            <Link
+              href="/survey"
+              prefetch={false}
+              className="text-sm font-bold text-white bg-[#111111] px-5 py-2.5 hover:bg-black transition-colors tracking-wide"
+            >
+              무료 진단 시작 →
+            </Link>
+          </div>
         </div>
       </nav>
 
@@ -51,22 +60,6 @@ export default function HomePage() {
               무료 진단 받기
               <ArrowRight className="w-4 h-4" />
             </Link>
-            <div className="flex items-center gap-3 self-center">
-              <Link
-                href="/member/login"
-                prefetch={false}
-                className="text-xs font-bold text-[#111111] border border-[#111111] px-4 py-2.5 hover:bg-[#111111] hover:text-white transition-colors uppercase tracking-widest"
-              >
-                로그인
-              </Link>
-              <Link
-                href="/member/signup"
-                prefetch={false}
-                className="text-xs font-bold text-[#888888] hover:text-[#111111] transition-colors uppercase tracking-widest"
-              >
-                회원가입
-              </Link>
-            </div>
           </div>
         </div>
       </section>
