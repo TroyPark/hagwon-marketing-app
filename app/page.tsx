@@ -262,6 +262,13 @@ export default function HomePage() {
             본 서비스는 참고용 견적 제공을 목적으로 하며, 실제 견적은 상담을 통해 확정됩니다.<br />
             © 2025 STRAIGHT LAB. All rights reserved.
           </p>
+          <Link
+            href="/login"
+            prefetch={false}
+            className="text-[#333333] hover:text-white text-xs transition-colors uppercase tracking-widest"
+          >
+            관리자 로그인
+          </Link>
         </div>
       </footer>
     </main>

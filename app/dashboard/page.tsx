@@ -55,7 +55,8 @@ export default function DashboardPage() {
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (!session) {
-        router.push('/login');
+        const base = process.env.NODE_ENV === 'production' ? '/hagwon-marketing-app' : '';
+        window.location.href = `${base}/login`;
         return;
       }
       setUser({
@@ -139,7 +140,8 @@ export default function DashboardPage() {
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
-    router.push('/login');
+    const base = process.env.NODE_ENV === 'production' ? '/hagwon-marketing-app' : '';
+    window.location.href = `${base}/login`;
   };
 
   // Stats
