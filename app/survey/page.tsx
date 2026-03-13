@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { SURVEY_SECTIONS, TOTAL_QUESTIONS } from '@/lib/survey-data';
 import { useSurveyStore } from '@/store/survey-store';
 import { SurveyQuestion } from '@/types';
-import { ChevronLeft, ChevronRight, CheckCircle, Phone, Shield, Loader2 } from 'lucide-react';
+import { ChevronLeft, ChevronRight, CheckCircle, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { getBudgetTier, calculateChannelPriority, generateInsights, predictKPI, generateActionPlan } from '@/lib/recommendation-engine';
@@ -108,18 +108,11 @@ function ContactStep({
   onPrev,
   submitting,
 }: {
-  onSubmit: (data: { hagwon_name: string; contact_name: string; phone: string; email: string; phone_verified: boolean }) => void;
+  onSubmit: (data: { hagwon_name: string; contact_name: string; phone: string; email: string }) => void;
   onPrev: () => void;
   submitting: boolean;
 }) {
   const [form, setForm] = useState({ hagwon_name: '', contact_name: '', phone: '', email: '' });
-  const [otpSent, setOtpSent] = useState(false);
-  const [otpCode, setOtpCode] = useState('');
-  const [phoneVerified, setPhoneVerified] = useState(false);
-  const [sendingOtp, setSendingOtp] = useState(false);
-  const [verifyingOtp, setVerifyingOtp] = useState(false);
-  const [otpError, setOtpError] = useState('');
-  const [otpSuccess, setOtpSuccess] = useState('');
   const [formError, setFormError] = useState('');
 
   const formatPhone = (val: string) => {
@@ -129,57 +122,13 @@ function ContactStep({
     return `${num.slice(0, 3)}-${num.slice(3, 7)}-${num.slice(7, 11)}`;
   };
 
-  const handlePhoneChange = (val: string) => {
-    setForm(p => ({ ...p, phone: formatPhone(val) }));
-    setPhoneVerified(false);
-    setOtpSent(false);
-    setOtpCode('');
-    setOtpError('');
-  };
-
-  const sendOtp = async () => {
-    const raw = form.phone.replace(/-/g, '');
-    if (!/^01[0-9]{8,9}$/.test(raw)) {
-      setOtpError('올바른 휴대폰 번호를 입력해 주세요.');
-      return;
-    }
-    setSendingOtp(true);
-    setOtpError('');
-    // 국제번호 형식으로 변환 (+82)
-    const intlPhone = '+82' + raw.replace(/^0/, '');
-    const { error } = await supabase.auth.signInWithOtp({ phone: intlPhone });
-    if (error) {
-      setOtpError('인증번호 발송에 실패했습니다. SMS 서비스 설정을 확인해 주세요.');
-    } else {
-      setOtpSent(true);
-      setOtpSuccess('인증번호가 발송되었습니다. (유효시간 10분)');
-    }
-    setSendingOtp(false);
-  };
-
-  const verifyOtp = async () => {
-    if (otpCode.length !== 6) { setOtpError('6자리 인증번호를 입력해 주세요.'); return; }
-    setVerifyingOtp(true);
-    setOtpError('');
-    const raw = form.phone.replace(/-/g, '');
-    const intlPhone = '+82' + raw.replace(/^0/, '');
-    const { error } = await supabase.auth.verifyOtp({ phone: intlPhone, token: otpCode, type: 'sms' });
-    if (error) {
-      setOtpError('인증번호가 올바르지 않습니다. 다시 확인해 주세요.');
-    } else {
-      setPhoneVerified(true);
-      setOtpSuccess('✓ 인증 완료');
-    }
-    setVerifyingOtp(false);
-  };
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.hagwon_name.trim()) { setFormError('학원명을 입력해 주세요.'); return; }
     if (!form.contact_name.trim()) { setFormError('담당자명을 입력해 주세요.'); return; }
     if (!form.phone.trim()) { setFormError('연락처를 입력해 주세요.'); return; }
     setFormError('');
-    onSubmit({ ...form, phone_verified: phoneVerified });
+    onSubmit(form);
   };
 
   return (
@@ -216,57 +165,15 @@ function ContactStep({
           />
         </div>
 
-        {/* 연락처 + OTP */}
+        {/* 연락처 */}
         <div className="bg-white border border-black/10 p-6">
-          <label className="block text-[10px] font-black text-[#111111] uppercase tracking-widest mb-3">
-            휴대폰 번호 *
-            {phoneVerified && (
-              <span className="ml-2 text-green-600 normal-case tracking-normal font-bold">✓ 인증완료</span>
-            )}
-          </label>
-          <div className="flex gap-2">
-            <input
-              type="tel" value={form.phone}
-              onChange={e => handlePhoneChange(e.target.value)}
-              placeholder="010-0000-0000" maxLength={13}
-              className="flex-1 border border-[#E5E5E5] px-4 py-3 text-sm text-[#111111] focus:outline-none focus:border-[#111111] transition-colors placeholder:text-[#CCCCCC]"
-            />
-            <button
-              type="button" onClick={sendOtp} disabled={sendingOtp || phoneVerified}
-              className="flex-shrink-0 flex items-center gap-1.5 bg-[#111111] hover:bg-black disabled:opacity-40 text-white font-bold px-4 py-3 text-xs uppercase tracking-wider transition-colors whitespace-nowrap"
-            >
-              {sendingOtp ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Phone className="w-3.5 h-3.5" />}
-              {otpSent ? '재발송' : '인증번호'}
-            </button>
-          </div>
-
-          {/* OTP 입력 */}
-          {otpSent && !phoneVerified && (
-            <div className="mt-3">
-              <div className="flex gap-2">
-                <input
-                  type="text" value={otpCode}
-                  onChange={e => setOtpCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
-                  placeholder="인증번호 6자리"
-                  className="flex-1 border border-[#E5E5E5] px-4 py-3 text-sm text-[#111111] focus:outline-none focus:border-[#111111] transition-colors placeholder:text-[#CCCCCC] tracking-[0.3em]"
-                />
-                <button
-                  type="button" onClick={verifyOtp} disabled={verifyingOtp || otpCode.length !== 6}
-                  className="flex-shrink-0 flex items-center gap-1.5 border border-[#111111] text-[#111111] hover:bg-[#111111] hover:text-white disabled:opacity-40 font-bold px-4 py-3 text-xs uppercase tracking-wider transition-colors"
-                >
-                  {verifyingOtp ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Shield className="w-3.5 h-3.5" />}
-                  확인
-                </button>
-              </div>
-            </div>
-          )}
-
-          {otpError && <p className="mt-2 text-xs text-red-500 font-medium">{otpError}</p>}
-          {otpSuccess && !otpError && <p className="mt-2 text-xs text-green-600 font-medium">{otpSuccess}</p>}
-
-          {!otpSent && (
-            <p className="mt-2 text-[10px] text-[#AAAAAA]">인증번호를 받아 휴대폰을 인증해 주세요.</p>
-          )}
+          <label className="block text-[10px] font-black text-[#111111] uppercase tracking-widest mb-3">휴대폰 번호 *</label>
+          <input
+            type="tel" value={form.phone}
+            onChange={e => setForm(p => ({ ...p, phone: formatPhone(e.target.value) }))}
+            placeholder="010-0000-0000" maxLength={13}
+            className="w-full border border-[#E5E5E5] px-4 py-3 text-sm text-[#111111] focus:outline-none focus:border-[#111111] transition-colors placeholder:text-[#CCCCCC]"
+          />
         </div>
 
         {/* 이메일 (선택) */}
@@ -350,7 +257,7 @@ export default function SurveyPage() {
   };
 
   const handleContactSubmit = async (contactData: {
-    hagwon_name: string; contact_name: string; phone: string; email: string; phone_verified: boolean;
+    hagwon_name: string; contact_name: string; phone: string; email: string;
   }) => {
     setSubmitting(true);
     try {
