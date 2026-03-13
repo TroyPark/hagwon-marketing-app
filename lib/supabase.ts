@@ -8,11 +8,9 @@ const siteUrl =
     ? window.location.origin + (window.location.pathname.startsWith('/hagwon-marketing-app') ? '/hagwon-marketing-app' : '')
     : 'https://troypark.github.io/hagwon-marketing-app';
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
-  auth: {
-    redirectTo: `${siteUrl}/dashboard`,
-  },
-});
+export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+
+export const getRedirectUrl = (path: string) => `${siteUrl}${path}`;
 
 export type LeadStatus = 'new' | 'contacted' | 'consulting' | 'contracted' | 'hold';
 

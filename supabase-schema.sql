@@ -31,3 +31,10 @@ create policy "Authenticated users can manage leads"
 create policy "Anyone can submit a lead"
   on leads for insert
   with check (true);
+
+-- =============================================
+-- 관리자 계정 role 설정 (최초 1회 실행)
+-- =============================================
+UPDATE auth.users
+SET raw_user_meta_data = raw_user_meta_data || '{"role": "admin"}'::jsonb
+WHERE email = 'troywppark@gmail.com';
