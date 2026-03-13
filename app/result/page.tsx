@@ -110,7 +110,7 @@ export default function ResultPage() {
     e.preventDefault();
     setConsultLoading(true);
     setConsultError('');
-    const { error } = await supabase.from('leads').insert({
+    const { error } = await supabase.from('customer').insert({
       hagwon_name: consultForm.hagwon_name,
       contact_name: consultForm.contact_name,
       phone: consultForm.phone,

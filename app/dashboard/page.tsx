@@ -4,13 +4,13 @@ import { useEffect, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
-import { supabase, Lead, LeadStatus } from '@/lib/supabase';
+import { supabase, Customer, CustomerStatus } from '@/lib/supabase';
 import {
   LogOut, Search, RefreshCw, ChevronRight, Phone, Mail,
   Calendar, TrendingUp, Users, CheckCircle2, Clock, X, Save,
 } from 'lucide-react';
 
-const STATUS_CONFIG: Record<LeadStatus, { label: string; color: string; dot: string }> = {
+const STATUS_CONFIG: Record<CustomerStatus, { label: string; color: string; dot: string }> = {
   new:        { label: '신규',   color: 'bg-blue-50 text-blue-700 border-blue-200',    dot: 'bg-blue-500' },
   contacted:  { label: '연락완료', color: 'bg-yellow-50 text-yellow-700 border-yellow-200', dot: 'bg-yellow-500' },
   consulting: { label: '상담중',  color: 'bg-purple-50 text-purple-700 border-purple-200', dot: 'bg-purple-500' },
@@ -18,7 +18,7 @@ const STATUS_CONFIG: Record<LeadStatus, { label: string; color: string; dot: str
   hold:       { label: '보류',   color: 'bg-gray-100 text-gray-600 border-gray-200',    dot: 'bg-gray-400' },
 };
 
-function StatusBadge({ status }: { status: LeadStatus }) {
+function StatusBadge({ status }: { status: CustomerStatus }) {
   const cfg = STATUS_CONFIG[status];
   return (
     <span className={`inline-flex items-center gap-1.5 text-xs font-bold px-2.5 py-1 border ${cfg.color}`}>
@@ -41,12 +41,12 @@ function formatKRW(n: number | null) {
 export default function DashboardPage() {
   const router = useRouter();
   const [user, setUser] = useState<{ email: string; name: string } | null>(null);
-  const [leads, setLeads] = useState<Lead[]>([]);
-  const [filtered, setFiltered] = useState<Lead[]>([]);
-  const [selected, setSelected] = useState<Lead | null>(null);
+  const [customers, setCustomers] = useState<Customer[]>([]);
+  const [filtered, setFiltered] = useState<Customer[]>([]);
+  const [selected, setSelected] = useState<Customer | null>(null);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
-  const [statusFilter, setStatusFilter] = useState<LeadStatus | 'all'>('all');
+  const [statusFilter, setStatusFilter] = useState<CustomerStatus | 'all'>('all');
   const [editNotes, setEditNotes] = useState('');
   const [savingNotes, setSavingNotes] = useState(false);
   const [updatingStatus, setUpdatingStatus] = useState(false);
@@ -69,11 +69,11 @@ export default function DashboardPage() {
   const fetchLeads = useCallback(async () => {
     setLoading(true);
     const { data, error } = await supabase
-      .from('leads')
+      .from('customer')
       .select('*')
       .order('created_at', { ascending: false });
     if (!error && data) {
-      setLeads(data as Lead[]);
+      setCustomers(data as Customer[]);
     }
     setLoading(false);
   }, []);
@@ -84,7 +84,7 @@ export default function DashboardPage() {
 
   // Filter
   useEffect(() => {
-    let list = leads;
+    let list = customers;
     if (statusFilter !== 'all') list = list.filter(l => l.status === statusFilter);
     if (search.trim()) {
       const q = search.toLowerCase();
@@ -95,26 +95,26 @@ export default function DashboardPage() {
       );
     }
     setFiltered(list);
-  }, [leads, search, statusFilter]);
+  }, [customers, search, statusFilter]);
 
   // Select lead
-  const selectLead = (lead: Lead) => {
+  const selectLead = (lead: Customer) => {
     setSelected(lead);
     setEditNotes(lead.notes || '');
   };
 
   // Update status
-  const updateStatus = async (id: string, status: LeadStatus) => {
+  const updateStatus = async (id: string, status: CustomerStatus) => {
     setUpdatingStatus(true);
     const { data, error } = await supabase
-      .from('leads')
+      .from('customer')
       .update({ status })
       .eq('id', id)
       .select()
       .single();
     if (!error && data) {
-      const updated = data as Lead;
-      setLeads(prev => prev.map(l => l.id === id ? updated : l));
+      const updated = data as Customer;
+      setCustomers(prev => prev.map(l => l.id === id ? updated : l));
       setSelected(updated);
     }
     setUpdatingStatus(false);
@@ -125,14 +125,14 @@ export default function DashboardPage() {
     if (!selected) return;
     setSavingNotes(true);
     const { data, error } = await supabase
-      .from('leads')
+      .from('customer')
       .update({ notes: editNotes })
       .eq('id', selected.id)
       .select()
       .single();
     if (!error && data) {
-      const updated = data as Lead;
-      setLeads(prev => prev.map(l => l.id === selected.id ? updated : l));
+      const updated = data as Customer;
+      setCustomers(prev => prev.map(l => l.id === selected.id ? updated : l));
       setSelected(updated);
     }
     setSavingNotes(false);
@@ -146,10 +146,10 @@ export default function DashboardPage() {
 
   // Stats
   const stats = {
-    total: leads.length,
-    new: leads.filter(l => l.status === 'new').length,
-    consulting: leads.filter(l => l.status === 'consulting').length,
-    contracted: leads.filter(l => l.status === 'contracted').length,
+    total: customers.length,
+    new: customers.filter(l => l.status === 'new').length,
+    consulting: customers.filter(l => l.status === 'consulting').length,
+    contracted: customers.filter(l => l.status === 'contracted').length,
   };
 
   if (!user) return null;
@@ -314,7 +314,7 @@ export default function DashboardPage() {
               <div className="bg-white border border-black/10 p-5 mb-4">
                 <h3 className="text-xs font-black text-[#111111] uppercase tracking-widest mb-4">상태 관리</h3>
                 <div className="flex flex-wrap gap-2">
-                  {(Object.keys(STATUS_CONFIG) as LeadStatus[]).map(s => (
+                  {(Object.keys(STATUS_CONFIG) as CustomerStatus[]).map(s => (
                     <button
                       key={s}
                       onClick={() => updateStatus(selected.id, s)}

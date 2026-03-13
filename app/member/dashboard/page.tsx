@@ -24,7 +24,7 @@ export default function MemberDashboardPage() {
 
       // 본인이 신청한 상담 목록
       const { data } = await supabase
-        .from('leads')
+        .from('customer')
         .select('id, created_at, hagwon_name, status, monthly_total')
         .eq('email', session.user.email)
         .order('created_at', { ascending: false });

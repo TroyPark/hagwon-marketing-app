@@ -3,8 +3,12 @@
 -- Supabase > SQL Editor 에서 실행하세요
 -- =============================================
 
--- leads 테이블
-create table if not exists leads (
+-- 기존 테이블 이름 변경 (이미 만든 경우)
+-- ALTER TABLE students RENAME TO customer;
+-- ALTER TABLE leads RENAME TO customer;
+
+-- customer 테이블 새로 생성
+create table if not exists customer (
   id uuid default gen_random_uuid() primary key,
   created_at timestamp with time zone default now(),
   hagwon_name text not null,
@@ -20,16 +24,16 @@ create table if not exists leads (
 );
 
 -- RLS 활성화
-alter table leads enable row level security;
+alter table customer enable row level security;
 
--- 인증된 사용자만 모든 작업 허용
-create policy "Authenticated users can manage leads"
-  on leads for all
+-- 인증된 사용자(관리자)만 전체 관리 가능
+create policy "Authenticated users can manage customers"
+  on customer for all
   using (auth.role() = 'authenticated');
 
--- 익명 사용자는 INSERT만 허용 (진단 결과 제출)
-create policy "Anyone can submit a lead"
-  on leads for insert
+-- 비로그인 사용자도 상담 신청(INSERT) 가능
+create policy "Anyone can submit a consultation"
+  on customer for insert
   with check (true);
 
 -- =============================================

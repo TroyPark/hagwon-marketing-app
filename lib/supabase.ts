@@ -12,9 +12,9 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 export const getRedirectUrl = (path: string) => `${siteUrl}${path}`;
 
-export type LeadStatus = 'new' | 'contacted' | 'consulting' | 'contracted' | 'hold';
+export type CustomerStatus = 'new' | 'contacted' | 'consulting' | 'contracted' | 'hold';
 
-export interface Lead {
+export interface Customer {
   id: string;
   created_at: string;
   hagwon_name: string;
@@ -22,7 +22,7 @@ export interface Lead {
   phone: string;
   email: string | null;
   diagnosis_result: Record<string, unknown> | null;
-  status: LeadStatus;
+  status: CustomerStatus;
   notes: string | null;
   budget_tier: string | null;
   recommended_channels: string[] | null;
