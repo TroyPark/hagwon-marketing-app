@@ -27,7 +27,17 @@ export default function MemberSignupPage() {
       options: { data: { name, role: 'member' } },
     });
 
-    if (error) { setError(error.message); setLoading(false); }
+    if (error) {
+      const msg = error.message.includes('already registered') || error.message.includes('already been registered')
+        ? '이미 가입된 이메일입니다.'
+        : error.message.includes('invalid') || error.message.includes('Invalid')
+        ? '올바른 이메일 형식을 입력해 주세요.'
+        : error.message.includes('rate limit') || error.message.includes('too many')
+        ? '잠시 후 다시 시도해 주세요. (요청 횟수 초과)'
+        : '회원가입에 실패했습니다. 다시 시도해 주세요.';
+      setError(msg);
+      setLoading(false);
+    }
     else setDone(true);
   };
 
